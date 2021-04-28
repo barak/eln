@@ -755,9 +755,9 @@ bool TextItem::keyPressAsInsertion(QKeyEvent *e) {
       break;
     case Qt::Key_Space:
       if (e->modifiers() & Qt::ShiftModifier)
-	now = QString::fromUtf8(" "); // figure space
+	now = QString(QChar(8199)); // figure space
       else
-	now = QString::fromUtf8(" "); // unbreakable space
+	now = QString(QChar(160)); // unbreakable space
       break;
     default:
       break;
@@ -1417,6 +1417,7 @@ bool TextItem::tryFootnote(bool del) {
   } else {
     if (oldmd) {
       bs->focusFootnote(i, oldmd->text());
+      anc->markPreviousFocus(data()->uuid());
       return true;
     } else if (start<end) {
       if (!symMark.isEmpty()) {
@@ -1433,6 +1434,7 @@ bool TextItem::tryFootnote(bool del) {
       }
       MarkupData *md = addMarkup(MarkupData::FootnoteRef, start, end);
       bs->newFootnote(i, md->text());
+      anc->markPreviousFocus(data()->uuid());
       return true;
     }
   }
