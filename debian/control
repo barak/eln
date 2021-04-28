@@ -2,12 +2,59 @@ Source: eln
 Section: editors
 Priority: optional
 Maintainer: Daniel Wagenaar <daw@caltech.edu>
-Build-Depends: debhelper (>= 9.0.0), qtbase5-dev (>= 5.5), qttools5-dev-tools (>= 5.5),libqt5webkit5-dev (>= 5.5), asciidoc(>= 8.6.0), libqt5svg5-dev (>= 5.5), xsltproc (>= 1.0), docbook-xml (>= 4.0), docbook-xsl (>= 1.0), texlive-latex-base (>= 2017), texlive-fonts-recommended (>= 2017), texlive-latex-extra (>= 2017), texlive-latex-recommended (>= 2017)
-Standards-Version: 3.9.8
+Build-Depends:	debhelper-compat (= 13), qtbase5-dev (>= 5.5),
+		qttools5-dev-tools (>= 5.5),libqt5webkit5-dev (>= 5.5),
+		asciidoc (>= 8.6.0), libqt5svg5-dev (>= 5.5),
+		xsltproc (>= 1.0),
+		docbook-xml (>= 4.0), docbook-xsl (>= 1.0),
+		texlive-latex-base (>= 2017),
+		texlive-fonts-recommended (>= 2017),
+		texlive-latex-extra (>= 2017),
+		texlive-latex-recommended (>= 2017),
+		latexmk
+Standards-Version: 4.5.1
 Homepage: http://www.danielwagenaar.net/eln
 
 Package: eln
 Architecture: any
-Depends: ${shlibs:Depends},${misc:Depends}, libqt5gui5 (>=5.5), libqt5webkit5 (>= 5.5), libqt5svg5 (>= 5.5)
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: eln-doc
 Description: Electronic Lab Notebook
  ELN is an electronic lab notebook with an emphasis on solid data storage.
+ It is designed for scientists of all stripes, and supports:
+ .
+  * Taking notes during experiments since it automatically saves your
+    input every 10 seconds so that your notes will never be lost;
+ .
+  * Keeping track of data analysis results since screen shots and
+    other graphics can be added to a notebook page by drag-and-drop or
+    copy-and-paste;
+ .
+  * Recording your lit searches, since it will automatically download
+    papers from PubMed and archive them with your notebook;
+ .
+  * Recording your thought processes, since it will never get in the
+    way of your typing with arbitrary constraints on input formatting.
+
+Package: eln-doc
+Section: doc
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Electronic Lab Notebook
+ ELN is an electronic lab notebook with an emphasis on solid data storage.
+ It is designed for scientists of all stripes, and supports:
+ .
+  * Taking notes during experiments since it automatically saves your
+    input every 10 seconds so that your notes will never be lost;
+ .
+  * Keeping track of data analysis results since screen shots and
+    other graphics can be added to a notebook page by drag-and-drop or
+    copy-and-paste;
+ .
+  * Recording your lit searches, since it will automatically download
+    papers from PubMed and archive them with your notebook;
+ .
+  * Recording your thought processes, since it will never get in the
+    way of your typing with arbitrary constraints on input formatting.
+ .
+ This package contains the users guide.

@@ -1,0 +1,5 @@
+src/eln		/usr/bin/
+webgrab/webgrab	/usr/bin/
+src/eln.desktop	/usr/share/applications/
+/usr/share/icons
+src/eln.xml	/usr/share/mime/packages/

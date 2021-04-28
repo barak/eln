@@ -1,3 +1,22 @@
+eln (1.2.20.3-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+  * Bump debhelper from deprecated 9 to 13.
+  * Set debhelper-compat version in Build-Depends.
+  * Bump policy version
+  * Trim trailing whitespace in debian/changelog
+  * Break out manual into separate -doc package
+  * Bypass top-level Makefile completely
+    - use qmake in source subdirs directly
+    - build manual using latexmk
+    - generate man pages in subdir
+    - install icon bitmaps
+  * Use make tricks in debian/rules to allow parallelism
+  * Quilt patch to correct upstream spelling error
+  * git ignore build deb-ris
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Wed, 28 Apr 2021 21:00:05 +0100
+
 eln (1.2.20-1) bionic; urgency=medium
 
   New features:

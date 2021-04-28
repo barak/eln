@@ -1,13 +1,51 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export QT_SELECT=5
 
 %:
-	dh $@ 
+	dh $@ --buildsystem=qmake
+
+# Try to allow max parallelism.
+
+override_dh_auto_configure: debian/stamp-dac1 debian/stamp-dac2
+debian/stamp-dac1:
+	dh_auto_configure --sourcedir=src
+	touch $@
+debian/stamp-dac2:
+	dh_auto_configure --sourcedir=webgrab
+	touch $@
+
+override_dh_auto_build: debian/stamp-dab1 debian/stamp-dab2 debian/stamp-dab3 debian/stamp-dab4
+debian/stamp-dab1:
+	dh_auto_build --sourcedir=src
+	touch $@
+debian/stamp-dab2:
+	dh_auto_build --sourcedir=webgrab
+	touch $@
+debian/stamp-dab3:
+	-mkdir -p build-doc
+	$(MAKE) -C doc eln.1 webgrab.1
+	touch $@
+debian/stamp-dab4:
+	cd doc && latexmk --pdf userguide.tex
+	touch $@
+
+override_dh_auto_install: debian/stamp-dai1 debian/stamp-dai2 debian/stamp-dai3
+debian/stamp-dai1:
+	dh_auto_install --sourcedir=src
+	touch $@
+debian/stamp-dai2:
+	dh_auto_install --sourcedir=webgrab
+	touch $@
+debian/stamp-dai3:
+	for r in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do \
+	  for i in apps/net.danielwagenaar.eln mimetypes/application-eln-book ; do \
+	    f="debian/tmp/usr/share/icons/hicolor/$$r/$$i.png"; \
+	    mkdir --verbose -p "$$(dirname $$f)"; \
+	    cp --verbose "src/App/eln.iconset/icon_$$r.png" "$$f"; \
+	  done; \
+	done
+	touch $@

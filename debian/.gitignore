@@ -1,0 +1,8 @@
+/*.debhelper.log
+/*.substvars
+/debhelper-build-stamp
+/eln-doc/
+/eln/
+/files
+/stamp-*
+/tmp/

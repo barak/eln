@@ -1,2 +1,1 @@
-build-doc/eln.1
-build-doc/webgrab.1
+build-doc/*.1
