@@ -14,8 +14,9 @@ eln (1.2.20.3-1) UNRELEASED; urgency=medium
   * Use make tricks in debian/rules to allow parallelism
   * Quilt patch to correct upstream spelling error
   * git ignore build deb-ris
+  * Update debian/copyright
 
- -- Barak A. Pearlmutter <bap@debian.org>  Wed, 28 Apr 2021 21:00:05 +0100
+ -- Barak A. Pearlmutter <bap@debian.org>  Wed, 28 Apr 2021 22:44:36 +0100
 
 eln (1.2.20-1) bionic; urgency=medium
 
