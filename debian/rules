@@ -42,7 +42,7 @@ debian/stamp-dai2:
 	touch $@
 debian/stamp-dai3:
 	for r in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do \
-	  for i in apps/net.danielwagenaar.eln mimetypes/application-eln-book ; do \
+	  for i in apps/eln mimetypes/application-eln-book ; do \
 	    f="debian/tmp/usr/share/icons/hicolor/$$r/$$i.png"; \
 	    mkdir --verbose -p "$$(dirname $$f)"; \
 	    cp --verbose "src/App/eln.iconset/icon_$$r.png" "$$f"; \
