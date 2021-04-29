@@ -15,6 +15,7 @@ Build-Depends: debhelper-compat (= 13), qtbase5-dev (>= 5.5),
 		texlive-latex-recommended (>= 2017),
 		latexmk
 Standards-Version: 4.5.1
+Rules-Requires-Root: no
 Homepage: http://www.danielwagenaar.net/eln
 Vcs-Git: https://salsa.debian.org/science-team/eln.git
 Vcs-Browser: https://salsa.debian.org/science-team/eln
@@ -44,7 +45,7 @@ Package: eln-doc
 Section: doc
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Electronic Lab Notebook
+Description: Electronic Lab Notebook Documentation
  ELN is an electronic lab notebook with an emphasis on solid data storage.
  It is designed for scientists of all stripes, and supports:
  .
