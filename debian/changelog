@@ -15,8 +15,9 @@ eln (1.2.20.3-1) UNRELEASED; urgency=medium
   * Quilt patch to correct upstream spelling error
   * git ignore build deb-ris
   * Update debian/copyright
+  * Add uscan support file
 
- -- Barak A. Pearlmutter <bap@debian.org>  Wed, 28 Apr 2021 22:44:36 +0100
+ -- Barak A. Pearlmutter <bap@debian.org>  Thu, 29 Apr 2021 08:49:30 +0100
 
 eln (1.2.20-1) bionic; urgency=medium
 
