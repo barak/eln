@@ -18,7 +18,7 @@ debian/stamp-dac2:
 	dh_auto_configure --sourcedir=webgrab
 	touch $@
 
-override_dh_auto_build: debian/stamp-dab1 debian/stamp-dab2 debian/stamp-dab3 debian/stamp-dab4
+override_dh_auto_build: debian/stamp-dab1 debian/stamp-dab2 debian/stamp-dab3 debian/stamp-dab4 debian/stamp-dab5
 debian/stamp-dab1:
 	dh_auto_build --sourcedir=src
 	touch $@
@@ -32,6 +32,9 @@ debian/stamp-dab3:
 debian/stamp-dab4:
 	cd doc && latexmk --pdf userguide.tex
 	touch $@
+debian/stamp-dab5:
+	$(MAKE) -C src/App/eln.iconset
+	touch $@
 
 override_dh_auto_install: debian/stamp-dai1 debian/stamp-dai2 debian/stamp-dai3
 debian/stamp-dai1:
@@ -41,11 +44,15 @@ debian/stamp-dai2:
 	dh_auto_install --sourcedir=webgrab
 	touch $@
 debian/stamp-dai3:
-	for r in $$(ls src/App/eln.iconset/icon_*.png | sed 's:^.*_::;s:[.]png$$::' | sort -n); do \
-	  for i in apps/eln mimetypes/application-eln-book ; do \
-	    f="debian/tmp/usr/share/icons/hicolor/$$r/$$i.png"; \
-	    mkdir --verbose -p "$$(dirname $$f)"; \
-	    cp --verbose "src/App/eln.iconset/icon_$$r.png" "$$f"; \
-	  done; \
+	for i in apps/eln mimetypes/application-eln-book ; do		\
+	  for r in $$(ls src/App/eln.iconset/eln_*.png			\
+			| sed 's:^.*_::;s:[.]png$$::' | sort -n); do	\
+	    f="debian/tmp/usr/share/icons/hicolor/$$r/$$i.png";		\
+	    mkdir --verbose -p "$$(dirname $$f)"; 			\
+	    cp --verbose "src/App/eln.iconset/eln_$$r.png" "$$f"; 	\
+	  done;								\
+	  f="debian/tmp/usr/share/icons/hicolor/scalable/$$i.svg";	\
+	  mkdir --verbose -p "$$(dirname $$f)";				\
+	  cp --verbose "src/App/eln.iconset/eln_scalable.svg" "$$f";	\
 	done
 	touch $@

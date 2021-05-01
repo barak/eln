@@ -1,3 +1,12 @@
+eln (1.2.20.3-2) unstable; urgency=medium
+
+  * Track upstream changes
+    - quilt patches upstreamed
+    - install scalable icon
+    - use bitmap icons derived from scalable icon
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Sat, 01 May 2021 21:36:12 +0100
+
 eln (1.2.20.3-1) unstable; urgency=medium
 
   * New upstream release
