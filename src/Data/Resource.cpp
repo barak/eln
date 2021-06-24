@@ -1,17 +1,17 @@
-// Data/Resource.cpp - This file is part of eln
+// Data/Resource.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Resource.C
@@ -109,7 +109,7 @@ void Resource::setRoot(QDir d) {
 }
 
 bool Resource::hasArchive() const {
-  return !arch.isEmpty() && dir.exists(arch) && !loader;
+  return !arch.isEmpty() && dir.exists(arch); // && !loader;
 }
 
 bool Resource::needsArchive() const {
@@ -242,6 +242,18 @@ bool Resource::importImage(QImage img) {
   return ok;
 }
 
+void Resource::setPreviewImage(QImage img) {
+  ensureArchiveFilename();
+  if (prev.isEmpty())
+    setPreviewFilename(safeBaseName(tag_) + "-" + uuid() + "p.png");
+  ensureDir();
+  qDebug() << "setpreviewimage" << img.size();
+  if (!img.isNull())
+    img.save(previewPath());
+  qDebug() << "image saved";
+}
+  
+
 void Resource::getArchiveAndPreview() {
   qDebug() << "getarchiveandpreview for " << tag_ << loader
 	   << needsArchive() << needsPreview() << src << src.isValid();
@@ -290,11 +302,11 @@ static QUrl urlFromTag(QString s) {
     return QUrl(s);
 
   if (s.startsWith("/"))
-    return QUrl("file://" + s);
+    return QUrl::fromLocalFile(s);
 
   if (s.startsWith("~/")) {
     QString home = qgetenv("HOME");
-    return QUrl("file://" + home + "/" + s.mid(2));
+    return QUrl::fromLocalFile(home + "/" + s.mid(2));
   }
   
   QStringList spl = s.split("/");  

@@ -1,17 +1,17 @@
-// Scenes/EntryScene.cpp - This file is part of eln
+// Scenes/EntryScene.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // EntryScene.C
@@ -43,7 +43,7 @@
 #include "GfxNoteData.h"
 #include "TableItem.h"
 #include "LateNoteManager.h"
-
+#include "VideoFile.h"
 #include "SvgFile.h"
 #include "Restacker.h"
 #include "Cursors.h"
@@ -260,7 +260,7 @@ void EntryScene::redateBlocks() {
   int st = data()->stampTime();
   double tmin = style().real("auto-timestamp-min-dt"); 
   for (int i=0; i<blockItems.size(); i++) {
-    if (blockItems[i]->data()->isEmpty() && i<blockItems.size()-1)
+    if (blockItems[i]->data()->isEmpty() && (i>0 || i<blockItems.size()-1))
       continue;
     QDateTime cre1 = blockItems[i]->data()->created();
     QDateTime mod1 = blockItems[i]->data()->modified();
@@ -871,6 +871,7 @@ bool EntryScene::mousePressEvent(QGraphicsSceneMouseEvent *e, SheetScene *s) {
       note->data()->setSheet(sh);
     } else {
       createLateNote(sp, sh);
+      mo->enterLateNote();
     }
     mo->setMode(Mode::Type);
     take = true;
@@ -1004,7 +1005,6 @@ bool EntryScene::tryToPaste(SheetScene *s) {
      If we don't have focus, anything is placed in the focused block if it
      is a canvas, or in a new block if not.
   */
-  qDebug() << "trytopaste";
   if (!isWritable())
     return false;
   
@@ -1068,6 +1068,25 @@ bool EntryScene::importDroppedSvg(QPointF scenePos, int sheet,
     return importDroppedImage(scenePos, sheet, img, source);
 }
 
+bool EntryScene::importDroppedVideo(QPointF scenePos, int sheet,
+				    QImage const &img, double dur,
+                                    QUrl const &source) {
+  QPointF pdest(0,0);
+  
+  int i = findBlock(scenePos, sheet);
+  GfxBlockItem *gdst = (i>=0) ? dynamic_cast<GfxBlockItem*>(blockItems[i]) : 0;
+  if (gdst) 
+    pdest = gdst->mapFromScene(scenePos);
+  // else if (i>=0 && i+1<blockItems.size())
+  //   gdst = dynamic_cast<GfxBlockItem*>(blockItems[i+1]);
+  if (!gdst)
+    gdst = newGfxBlockAt(scenePos, sheet);
+
+  gdst->newVideo(img, dur, source, pdest);
+  gotoSheetOfBlock(findBlock(gdst));
+  return true;
+}
+
 bool EntryScene::importDroppedImage(QPointF scenePos, int sheet,
 				    QImage const &img, QUrl const &source) {
   // Return true if we want it
@@ -1128,14 +1147,29 @@ bool EntryScene::importDroppedUrl(QPointF scenePos, int sheet,
     QString path = url.toLocalFile();
     if (path.endsWith(".svg")) 
       return importDroppedSvg(scenePos, sheet, url);
+
     QImage image = QImage(path);
-    if (!image.isNull())
+    if (!image.isNull()) 
       return importDroppedImage(scenePos, sheet, image, url);
-    else 
-      return importDroppedFile(scenePos, sheet, path);
+
+    if (VideoFile::plausiblyVideo(url)) {
+      VideoFile vf(url);
+      if (vf.checkValidity()) 
+        return importDroppedVideo(scenePos, sheet,
+                                  vf.keyImage(), vf.duration(), url);
+    }
+    return importDroppedFile(scenePos, sheet, path);
   } else {
-    // Right now, we import all network urls as text
-    return importDroppedText(scenePos, sheet, url.toString(), 0, 0, 0, fi);
+    // Right now, we import all network urls as text, which becomes a link
+    // This should be reconsidered if the network url points to an image
+    // or video
+    int start, end;
+    TextItem *ti;
+    if (!importDroppedText(scenePos, sheet, url.toString(),
+                           &ti, &start, &end, fi))
+      return false;
+    ti->addMarkup(MarkupData::Link, start, end);
+    return true;
   }
   return false;
 }
@@ -1161,10 +1195,8 @@ bool EntryScene::importDroppedText(QPointF scenePos, int sheet,
         GfxBlockItem *gbi = dynamic_cast<GfxBlockItem*>(blockItems[blk]);
         TextBlockItem *tbi = dynamic_cast<TextBlockItem*>(blockItems[blk]);
         if (tbi) {
-	  qDebug() << "textblock";
           ti = tbi->text();
         } else if (gbi) {
-	  qDebug() << "graphicsblock";
 	  QPointF p(gbi->mapFromScene(scenePos));
           GfxNoteItem *note = gbi->newGfxNote(p, p);
           ti = note->textItem();
@@ -1182,7 +1214,6 @@ bool EntryScene::importDroppedText(QPointF scenePos, int sheet,
     }
   }
 
-  qDebug() << "got ti" << ti;
   if (!ti)
     return false;
 
@@ -1394,7 +1425,6 @@ TableBlockItem *EntryScene::makeMulticellular(int pos, TextData *td) {
 }
 
 void EntryScene::makeMulticellularAndPaste(TextData *td, QString txt) {
-  qDebug() <<"mmapaste";
   TableBlockItem *tbi = makeMulticellular(0, td);
   if (!tbi)
     return; // oh well
@@ -1415,4 +1445,9 @@ int EntryScene::findLastBlockOnSheet(int sh) {
       res = b;
   }
   return res;
+}
+
+void EntryScene::waitForLoadComplete() {
+  for (BlockItem *bi: blockItems)
+    bi->waitForLoadComplete();
 }

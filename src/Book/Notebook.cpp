@@ -1,18 +1,18 @@
 
-// Book/Notebook.cpp - This file is part of eln
+// Book/Notebook.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Notebook.C
@@ -34,7 +34,6 @@
 #include <QDebug>
 #include <QProcess>
 #include "RmDir.h"
-#include "Mode.h"
 
 QString Notebook::checkVersionControl(QString path) {
   QDir root(path);
@@ -55,7 +54,13 @@ Notebook::Notebook(QString path, bool ro0): root(QDir(path)), ro(ro0) {
   index_ = 0;
   tocFile_ = 0;
   bookFile_ = 0;
-  mode_ = new Mode(isReadOnly(), this);
+  if (!ro) {
+    QFile test(root.filePath("test.txt"));
+    if (test.open(QFile::WriteOnly)) 
+      test.remove();
+   else 
+     ro = true;
+  }
 }
 
 void Notebook::load() {
@@ -414,12 +419,13 @@ Index *Notebook::index() const {
 
 
 CachedEntry Notebook::recoverFromExistingEntry(int pgno) {
-  QMessageBox::critical(0, Translate::_("eln"),
+  QString eln = Translate::_("eln");
+  QMessageBox::critical(0, eln,
                         QString("Page %1 already exists while trying to create"
                                 " a new entry. This is a sign of TOC"
-                                " corruption. ELN will exit now and attempt"
+                                " corruption. %2 will exit now and attempt"
                                 " to rebuild the TOC when you restart it.")
-                        .arg(pgno), QMessageBox::Ok);
+                        .arg(pgno).arg(eln), QMessageBox::Ok);
   flush();
   root.remove("toc.json");
   root.remove("index.json");
@@ -428,12 +434,13 @@ CachedEntry Notebook::recoverFromExistingEntry(int pgno) {
 }
 
 EntryFile *Notebook::recoverFromMissingEntry(int pgno) {
-  QMessageBox::critical(0, Translate::_("eln"),
+  QString eln = Translate::_("eln");
+  QMessageBox::critical(0, eln,
                         QString("Page %1 could not be loaded."
                                 " This is a sign of TOC"
-                                " corruption. ELN will exit now and attempt"
+                                " corruption. %2 will exit now and attempt"
                                 " to rebuild the TOC when you restart it.")
-                        .arg(pgno), QMessageBox::Ok);
+                        .arg(pgno).arg(eln), QMessageBox::Ok);
   flush();
   root.remove("toc.json");
   root.remove("index.json");
@@ -443,8 +450,4 @@ EntryFile *Notebook::recoverFromMissingEntry(int pgno) {
 
 void Notebook::markReadOnly() {
   ro = true;
-}
-
-Mode *Notebook::mode() const {
-  return mode_;
 }

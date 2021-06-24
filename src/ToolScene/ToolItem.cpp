@@ -1,17 +1,17 @@
-// App/ToolItem.cpp - This file is part of eln
+// App/ToolItem.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // ToolItem.C
@@ -36,6 +36,7 @@
 #define SHRINK 1
 
 ToolItem::ToolItem(): QGraphicsObject() {
+  alpha = 1;
   popupDelay = 0;
   balloon = 0;
   svg = 0;
@@ -86,7 +87,9 @@ QRectF ToolItem::boundingRect() const {
 
 void ToolItem::paintContents(QPainter *p) {
   if (!isEnabled())
-    p->setOpacity(0.25);
+    p->setOpacity(0.25*alpha);
+  else
+    p->setOpacity(alpha);
   if (svg) 
     svg->render(p, boundingRect());
 }
@@ -99,9 +102,9 @@ void ToolItem::setBalloonHelpText(QString txt) {
 
 void ToolItem::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *) {
   QColor blk("black");
-  blk.setAlphaF(0.25);
+  blk.setAlphaF(.25*alpha);
   QColor wht("white");
-  wht.setAlphaF(0.5);
+  wht.setAlphaF(.5*alpha);
 
   if (sel) {  
     p->setPen(Qt::NoPen);
@@ -260,4 +263,9 @@ void ToolItem::popup() {
   shadow->setColor("black");
   rect->setGraphicsEffect(shadow);
   balloon->setPos(mapToScene(popupPos + QPointF(10, 10)));
+}
+
+void ToolItem::setAlpha(double a) {
+  alpha = a;
+  update();
 }

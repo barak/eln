@@ -1,17 +1,17 @@
-// Items/GfxBlockItem.H - This file is part of eln
+// Items/GfxBlockItem.H - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // GfxBlockItem.H
@@ -31,8 +31,8 @@ public:
   GfxBlockItem(GfxBlockData *data, Item *parent=0);
   virtual ~GfxBlockItem();
   DATAACCESS(GfxBlockData);
+  Item *newVideo(QImage keyimg, double dur, QUrl src, QPointF xy);
   Item *newImage(QImage img, QUrl src, QPointF xy);
-  Item *newImage(QUrl src, QPointF xy);
   void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
   QRectF boundingRect() const;
   virtual void makeWritable();

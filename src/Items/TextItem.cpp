@@ -1,17 +1,17 @@
-// Items/TextItem.cpp - This file is part of eln
+// Items/TextItem.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // TextItem.C
@@ -104,6 +104,15 @@ void TextItem::finalizeConstructor(int sheet) {
 	  this, SLOT(docChange()));
   connect(document(), SIGNAL(markupChanged(MarkupData *)),
 	  this, SLOT(markupChange(MarkupData *)));
+  connect(document(), &TextItemDoc::noLongerEmpty,
+          [this]() {
+            BlockItem *bi = ancestralBlock();
+            if (bi) {
+              EntryScene *es = dynamic_cast<EntryScene *>(bi->baseScene());
+              if (es)
+                es->redateBlocks();
+            }
+          });
 }
 
 bool TextItem::allowNotes() const {
@@ -150,6 +159,13 @@ void TextItem::docChange() {
 
 void TextItem::focusInEvent(QFocusEvent *e) {
   QGraphicsItem::focusInEvent(e);
+  if (isWritable() && dynamic_cast<LateNoteItem*>(parent())) {
+    PageView *pv = EventView::eventView();
+    if (pv)
+      pv->mode()->enterLateNote();
+    else
+      qDebug() << "text focusin - no eventview";
+  }
 }
 
 void TextItem::focusOutEvent(QFocusEvent *e) {
@@ -162,6 +178,13 @@ void TextItem::focusOutEvent(QFocusEvent *e) {
     if (fi != this) {
       cursor.clearSelection();
       update();
+      if (dynamic_cast<LateNoteItem*>(parent())) {
+        PageView *pv = EventView::eventView();
+        if (pv)
+          pv->mode()->leaveLateNote();
+        else
+          qDebug() << "text focusout - no eventview";
+      }
     }
   }
 
@@ -275,7 +298,8 @@ void TextItem::mousePressEvent(QGraphicsSceneMouseEvent *e) {
   e->accept();
   switch (e->button()) {
   case Qt::LeftButton:
-    if ((mode()->mode()==Mode::Type || mode()->mode()==Mode::Browse)
+    if ((mode()->mode()==Mode::Type || mode()->mode()==Mode::Browse
+         || mode()->mode()==Mode::Annotate)
         && lastClickTime.elapsed() < 500
         && (lastClickScreenPos - e->screenPos()).manhattanLength()<5) 
       // Select word or line or paragraph
@@ -286,7 +310,7 @@ void TextItem::mousePressEvent(QGraphicsSceneMouseEvent *e) {
     lastClickScreenPos = e->screenPos();
     break;
   case Qt::MiddleButton:
-    if (mode()->mode() == Mode::Type) {
+    if (mode()->mode()==Mode::Type || mode()->mode()==Mode::Annotate) {
       QClipboard *cb = QApplication::clipboard();
       QString txt = cb->text(QClipboard::Selection);
       if (!txt.isEmpty()) {
@@ -560,7 +584,8 @@ bool TextItem::keyPressWithControl(QKeyEvent *e) {
   
   switch (e->key()) {
   case Qt::Key_V:
-    tryToPaste(); // for text only; image pasting is handled in EntryScene
+    if (!cursor.hasSelection())
+      tryToPaste(); // for text only; image pasting is handled in EntryScene
     return true;
   case Qt::Key_C:
     tryToCopy();
@@ -670,7 +695,7 @@ bool TextItem::tryTeXCode(bool noX, bool onlyAtEndOfWord) {
 
   if (!TeXCodes::contains(key))
     return false;
-  if (noX && key.size()==1)
+  if (noX && TeXCodes::onlyExplicit(key))
     return false;
 
   if (data()->markupEdgeIn(c.selectionStart(), c.selectionEnd()))
@@ -835,7 +860,6 @@ bool TextItem::keyPressAsBackslash(QKeyEvent *e) {
   if (!subst)
     return false;
 
-  qDebug() << "subst" << pre;
   
   if (hasacc) {
     if (Accents::contains(pre)) {
@@ -871,22 +895,28 @@ int TextItem::substituteInternalScripts(int start, int end) {
     if (!md)
       break;
     int s = md->start();
+    int e = md->end();
     deleteMarkup(md);
-    TextCursor cur(document(), s);
-    cur.insertText("^");
-    sumdelta += 1;
-    end += 1;
+    for (int p=e-1; p>=s; --p) {
+      TextCursor cur(document(), p);
+      cur.insertText("^");
+      sumdelta += 1;
+      end += 1;
+    }
   }
   while (true) {
     MarkupData *md = data()->markupAt(start, end, MarkupData::Subscript);
     if (!md)
       break;
     int s = md->start();
+    int e = md->end();
     deleteMarkup(md);
-    TextCursor cur(document(), s);
-    cur.insertText("_");
-    sumdelta += 1;
-    end += 1;
+    for (int p=e-1; p>=s; --p) {
+      TextCursor cur(document(), p);
+      cur.insertText("_");
+      sumdelta += 1;
+      end += 1;
+    }
   }
   for (int pos=start; pos<end; pos++) {
     QChar c = document()->characterAt(pos);

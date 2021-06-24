@@ -1,17 +1,17 @@
-// Scenes/BaseScene.cpp - This file is part of eln
+// Scenes/BaseScene.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // BaseScene.C
@@ -106,6 +106,24 @@ void BaseScene::focusTitle(int sheet) {
     ti->setFocus();
 }
 
+class PrintAnnotations {
+public:
+  PrintAnnotations(QList<QGraphicsItem *> anno, SheetScene *dest):
+    anno(anno), dest(dest) {
+    for (QGraphicsItem *a: anno)
+      dest->addItem(a);
+  }
+  ~PrintAnnotations() {
+    for (QGraphicsItem *a: anno)
+      dest->removeItem(a);
+    for (auto a: anno)
+      delete a;
+  }
+private:
+  QList<QGraphicsItem *> anno;
+  SheetScene *dest;
+};
+
 bool BaseScene::print(QPrinter *prt, QPainter *p,
 		      int firstSheet, int lastSheet) {
   QString phr = SearchDialog::latestPhrase();
@@ -121,18 +139,15 @@ bool BaseScene::print(QPrinter *prt, QPainter *p,
       .startsWith(pgNoToString(startPage()+lastSheet)))
     // slightly convoluted way to pick up continuation pages.
     lastSheet = nSheets-1; 
+
+  waitForLoadComplete();
+
   bool first = true;
   for (int k=firstSheet; k<=lastSheet; k++) {
     if (!first)
       prt->newPage();
-    QList<QGraphicsItem *> anno = printAnnotations(k);
-    for (auto a: anno)
-      sheets[k]->addItem(a);
+    PrintAnnotations pa(printAnnotations(k), sheets[k]);
     sheets[k]->render(p);
-    for (auto a: anno)
-      sheets[k]->removeItem(a);
-    for (auto a: anno)
-      delete a;
     first = false;
   }
 

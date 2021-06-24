@@ -1,17 +1,17 @@
-// App/Elnassert.cpp - This file is part of eln
+// App/Elnassert.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Elnassert.C
@@ -142,7 +142,7 @@ void Assertion::reportSaved(int nsaved, int nunsaved) {
   QString msg = message().trimmed();
   if (!msg.endsWith("."))
     msg += ".";
-  if (!backtrace().isEmpty())
+  if (!backtrace().trimmed().isEmpty())
     msg += "\n\nStack backtrace:\n" + backtrace();
   if (nunsaved>0)
     msg += "\nRegrettably, your work of the last few seconds"
@@ -154,8 +154,8 @@ void Assertion::reportSaved(int nsaved, int nunsaved) {
     msg += " at " + email;
   msg += ".";
   if (!vsn.isEmpty())
-    msg += " Please mention this ELN version: " + vsn + ".";
-  msg += "\n\n(ELN automatically saves your work every few seconds,"
+    msg += " Please mention this NotedELN version: " + vsn + ".";
+  msg += "\n\n(NotedELN automatically saves your work every few seconds,"
     " so hopefully your data loss is minimal."
     " Regardless: apologies for the inconvenience.)";
   mb.setInformativeText(msg);

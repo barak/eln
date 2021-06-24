@@ -1,17 +1,17 @@
-// App/PageView.cpp - This file is part of eln
+// App/PageView.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // PageView.C
@@ -54,6 +54,7 @@ PageView::PageView(SceneBank *bank, PageEditor *parent):
   book = bank->book(); // for convenience only
   ASSERT(book);
   ASSERT(parent);
+  mode_ = new Mode(book->isReadOnly());
   searchDialog = new SearchDialog(this);
   deletedStack = new DeletedStack(this);
 
@@ -444,7 +445,8 @@ void PageView::gotoEntryPage(int n, int dir) {
   if (n>=N) {
     n = N;
     if (n<=1) {
-      book->createEntry(n); // create first entry
+      if (!book->isReadOnly())
+        book->createEntry(n); // create first entry
     } else {
       TOCEntry *te = book->toc()->findBackward(n);
       if (te) {
@@ -495,10 +497,7 @@ void PageView::gotoEntryPage(int n, int dir) {
   if (entryScene->data()->title()->isDefault())
     entryScene->focusTitle(currentSheet);
 
-  if (entryScene->isWritable())
-    mode()->setMode(Mode::Type);
-  else
-    mode()->setMode(Mode::Browse);
+  mode()->setWritable(entryScene->isWritable());
 }
 
 void PageView::gotoFront() {
@@ -687,13 +686,14 @@ void PageView::lastPage(Qt::KeyboardModifiers m) {
     newView()->lastPage();
   } else {
     gotoEntryPage(book->toc()->newPageNumber()-1);
-    gotoSheet(entryScene->sheetCount()-1);
+    if (entryScene)
+      gotoSheet(entryScene->sheetCount()-1);
     focusEntry();
   }
 }
 
 Mode *PageView::mode() const {
-  return notebook()->mode();
+  return mode_;
 }
 
 Notebook *PageView::notebook() const {

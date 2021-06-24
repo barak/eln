@@ -1,17 +1,17 @@
-// Items/Item.cpp - This file is part of eln
+// Items/Item.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Item.C
@@ -35,6 +35,9 @@
 #include "Mode.h"
 #include "BlockItem.h"
 #include "SheetScene.h"
+#include "EventView.h"
+#include "PageView.h"
+
 
 Item::Item(Data *d, Item *parent): QGraphicsObject(parent), d(d) {
   ASSERT(d);
@@ -86,8 +89,14 @@ void Item::makeWritable() {
 }
 
 Mode *Item::mode() const {
+  static Mode nullmode(true);
   ASSERT(d);
-  return d->book()->mode();
+  PageView *pv = EventView::eventView();
+  if (!pv) {
+    qDebug() << "no eventview, hence no mode";
+    return &nullmode;
+  }
+  return pv->mode();
 }
 
 Item *Item::create(Data *d, Item *parent) {
@@ -163,7 +172,6 @@ GfxNoteItem *Item::newGfxNote(QPointF p0, QPointF p1) {
 }
 
 GfxNoteItem *Item::createGfxNote(QPointF p0) {
-  qDebug() << "creategfxnote" << p0;
   ASSERT(d);
   QPointF p1 = mapFromScene(DragLine::drag(scene(), mapToScene(p0), style()));
   return newGfxNote(p0, p1);
@@ -255,4 +263,7 @@ Item *Item::findDescendant(QString uuid) {
   return 0;
 }
 
-  
+void Item::waitForLoadComplete() {
+  for (Item *it: allChildren())
+    it->waitForLoadComplete();
+}

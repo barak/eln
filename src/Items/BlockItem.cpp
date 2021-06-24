@@ -1,17 +1,17 @@
-// Items/BlockItem.cpp - This file is part of eln
+// Items/BlockItem.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // BlockItem.C
@@ -87,7 +87,6 @@ int BlockItem::countReferences(QString txt) const {
 void BlockItem::refTextChange(QString olds, QString news) {
   int nOldRefs = countReferences(olds);
   int nNewRefs = countReferences(news);
-  qDebug() << "BI: reftxtchg" << olds << news << nOldRefs << nNewRefs;
   // nOldRefs is *other* refs; the change must already have been made
   // nNewRefs is other refs plus the one that just changed
   ASSERT(news.isEmpty() || nNewRefs>0);
@@ -159,7 +158,7 @@ void BlockItem::setBaseScene(BaseScene *b) {
   //   fni->setBaseScene(b);
 }
 
-BaseScene *BlockItem::baseScene() {
+BaseScene *BlockItem::baseScene() const {
   return bs;
 }
 
@@ -216,7 +215,6 @@ void BlockItem::futileMovementFromFootnote() {
     if (prevfocus != "") {
       Item *src = findDescendant(prevfocus);
       if (src) {
-        qDebug() << "go back to" << src;
         src->setFocus();
       }
     }

@@ -1,17 +1,17 @@
-// Items/HtmlBuilder.cpp - This file is part of eln
+// Items/HtmlBuilder.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // HtmlBuilder.cpp
@@ -26,7 +26,7 @@ HtmlBuilder::HtmlBuilder(TextData const *src, int start, int end) {
     end = text.size();
   text = text.mid(start, end-start);
   
-  MarkupEdges edges(src->markups());
+  MarkupEdges edges(src->markups(), src->created());
   MarkupStyles style;
   foreach (int k, edges.keys()) 
     if (k<start)

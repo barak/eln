@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=NotedELN
+GenericName=Electronic Lab Notebook
+Exec=noted %f
+Terminal=false
+Type=Application
+Categories=Office
+Icon=notedeln
+MimeType=application/notedeln-book
+Keywords=science;laboratory;data analysis;screen shots;literature search;PubMed;note taking;

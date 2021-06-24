@@ -1,17 +1,17 @@
-// App/Mode.cpp - This file is part of eln
+// App/Mode.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Mode.C
@@ -20,6 +20,8 @@
 #include <QDebug>
 
 Mode::Mode(bool ro, QObject *parent): QObject(parent), ro(ro) {
+  writable = !ro;
+  inlatenote = false;
   m = Browse;
   typem = Normal;
   drawm = Freehand;
@@ -63,13 +65,20 @@ QColor Mode::color() const {
 GfxMarkData::Shape Mode::shape() const {
   return shp;
 }
+
 double Mode::markSize() const {
   return ms;
 }
 
 void Mode::setMode(Mode::M m1) {
   if (ro && m1!=Browse) {
-    qDebug() << "Caution: setMode ignored on RO";
+    qDebug() << "Caution: setMode ignored on read-only";
+    m1 = Browse;
+  } else if (!writable
+             && !(m1==Browse || m1==Annotate
+                  || m1==Highlight || m1==Strikeout || m1==Plain
+                  || (inlatenote && m1==Type))) {
+    qDebug() << "Caution: setMode ignored on nonwritable";
     m1 = Browse;
   }
   m = m1;
@@ -129,3 +138,27 @@ void Mode::setMarkSize(double ms1) {
   emit markSizeChanged(ms);
 }
 
+void Mode::setWritable(bool wr) {
+  writable = wr;
+  if (writable || inlatenote)
+    setMode(Type);
+  else
+    setMode(Browse);
+}
+
+bool Mode::isWritable() const {
+  return !ro && writable;
+}
+
+void Mode::enterLateNote() {
+  qDebug() << "mode::enterlatenote";
+  inlatenote = true;
+  if (m==Browse)
+    setMode(Type);
+}
+
+void Mode::leaveLateNote() {
+  inlatenote = false;
+  if (m==Type && !writable)
+    setMode(Browse);
+}

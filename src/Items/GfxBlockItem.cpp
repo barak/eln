@@ -1,17 +1,17 @@
-// Items/GfxBlockItem.cpp - This file is part of eln
+// Items/GfxBlockItem.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // GfxBlockItem.C
@@ -26,7 +26,9 @@
 #include "ResManager.h"
 #include "TextItem.h"
 #include "GfxImageData.h"
+#include "GfxVideoData.h"
 #include "GfxImageItem.h"
+#include "GfxVideoItem.h"
 #include "GfxNoteData.h"
 #include "GfxNoteItem.h"
 #include <math.h>
@@ -66,7 +68,6 @@ static QPointF constrainPointToRect(QPointF p, QRectF rect) {
 }
 
 Item *GfxBlockItem::newImage(QImage img, QUrl src, QPointF pos) {
-  qDebug() << "GfxBlockItem::newImage";
   ASSERT(data()->book());
   ASSERT(data()->resManager());
   double maxW = availableWidth();
@@ -87,6 +88,33 @@ Item *GfxBlockItem::newImage(QImage img, QUrl src, QPointF pos) {
   gid->setScale(scale);
   gid->setPos(pos);
   GfxImageItem *gii = new GfxImageItem(gid, this);
+  gii->makeWritable();
+  resetPosition();
+  sizeToFit();
+  return gii;
+}
+
+Item *GfxBlockItem::newVideo(QImage img, double dur, QUrl src, QPointF pos) {
+  ASSERT(data()->book());
+  ASSERT(data()->resManager());
+  double maxW = availableWidth();
+  double maxH = maxW;
+  double scale = 1;
+  if (scale*img.width()>maxW)
+    scale = maxW/img.width();
+  if (scale*img.height()>maxH)
+    scale = maxH/img.height();
+  if (allChildren().isEmpty())
+    pos = QPointF(0, 0);
+  else
+    pos -= QPointF(img.width(),img.height())*(scale/2);
+  pos = constrainPointToRect(pos, boundingRect());
+  Resource *res = data()->resManager()->importVideo(img, src);
+  QString resname = res->tag();
+  GfxVideoData *gid = new GfxVideoData(resname, img, dur, data());
+  gid->setScale(scale);
+  gid->setPos(pos);
+  GfxVideoItem *gii = new GfxVideoItem(gid, this);
   gii->makeWritable();
   resetPosition();
   sizeToFit();
@@ -152,7 +180,7 @@ QRectF GfxBlockItem::boundingRect() const {
 void GfxBlockItem::paint(QPainter *p,
 			 const QStyleOptionGraphicsItem *,
 			 QWidget *) {
-  // paint background grid; items draw themselves  
+  // paint background grid; items draw themselves
   QRectF bb = boundingRect();
   QColor c(style().color("canvas-grid-color"));
   c.setAlphaF(style().real("canvas-grid-alpha"));

@@ -1,17 +1,17 @@
-// App/HtmlOutput.cpp - This file is part of eln
+// App/HtmlOutput.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // HtmlOutput.cpp
@@ -350,16 +350,22 @@ void HtmlOutput::addText(TextData const *source, ResManager const *resmgr,
      So: I'll simply close all at every markup edge.
      Oh. No. That won't work. I cannot arbitrarily close <a href> markups.*/
 
+  QMap<int, QSet<QString> > startTags; // maps from edge position
+  QMap<int, QSet<QString> > endTags;
   QMap<int, QString> hrefs;
   QMap<int, QString> hrefends;
   QSet<int> edges;
   edges.insert(startidx);
   foreach (MarkupData *md, markups) {
     int s = md->start();
+    if (endidx>=0 && s>=endidx)
+      continue;
     if (s<startidx)
       s=startidx;
     edges.insert(s);
     int e = md->end();
+    if (e<startidx)
+      continue;
     if (endidx>=0 && e>endidx)
       e=endidx;
     edges.insert(e);
@@ -367,22 +373,7 @@ void HtmlOutput::addText(TextData const *source, ResManager const *resmgr,
       hrefs[s] = txt.mid(md->start(), md->end()-md->start());
       hrefends[e] = txt.mid(md->start(), md->end()-md->start());
     }
-      
-  }
-  int e = txt.size();
-  if (endidx>=0 && e>endidx)
-    e=endidx;
-  edges.insert(e);
-  
-  QList<int> edgeList = edges.toList();
-  qSort(edgeList);
-  QMap<int, QString> textBits;
-  for (int k=0; k<edgeList.size()-1; k++)
-    textBits[edgeList[k]] = txt.mid(edgeList[k], edgeList[k+1]-edgeList[k]);
 
-  QMap<int, QSet<QString> > startTags; // maps from edge position
-  QMap<int, QSet<QString> > endTags;
-  foreach (MarkupData *md, markups) {
     QString tag;
     switch (md->style()) {
     case MarkupData::Italic: tag = "i"; break;
@@ -402,9 +393,20 @@ void HtmlOutput::addText(TextData const *source, ResManager const *resmgr,
       ASSERT(0); // this should not happen
       break;
     }
-    startTags[md->start()].insert(tag);
-    endTags[md->end()].insert(tag);
+    startTags[s].insert(tag);
+    endTags[e].insert(tag);
   }
+  
+  int e = txt.size();
+  if (endidx>=0 && e>endidx)
+    e=endidx;
+  edges.insert(e);
+  
+  QList<int> edgeList = edges.toList();
+  qSort(edgeList);
+  QMap<int, QString> textBits;
+  for (int k=0; k<edgeList.size()-1; k++)
+    textBits[edgeList[k]] = txt.mid(edgeList[k], edgeList[k+1]-edgeList[k]);
 
   foreach (int x, startTags.keys()) {
     QSet<QString> dups;

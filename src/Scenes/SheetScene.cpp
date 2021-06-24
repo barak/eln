@@ -1,17 +1,17 @@
-// Scenes/SheetScene.cpp - This file is part of eln
+// Scenes/SheetScene.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // SheetScene.cpp
@@ -287,6 +287,7 @@ void SheetScene::dragEnterEvent(QGraphicsSceneDragDropEvent *e) {
   qDebug() << "SheetScene::dragEnterEvent: has image?" << md->hasImage()
 	   << "hasurl?" << md->hasUrls()
 	   << "hastext?" << md->hasText()
+           << "formats" << md->formats()
 	   << "has base?" << base
 	   << "iswritable" << (base && base->isWritable())
 	   << "proposed" << e->proposedAction();
@@ -327,8 +328,13 @@ void SheetScene::drawBackground(QPainter *p, const QRectF &r) {
 }
 
 Mode *SheetScene::mode() const {
-  ASSERT(base);
-  return base->book()->mode();
+  static Mode nullmode(true);
+  PageView *pv = EventView::eventView();
+  if (!pv) {
+    qDebug() << "no eventview hence no mode";
+    return &nullmode;
+  }
+  return pv->mode();
 }
 
 void SheetScene::futileTitleMovement(int key, Qt::KeyboardModifiers) {

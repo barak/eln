@@ -1,9 +1,9 @@
-# ELN - an Electronic Lab Notebook
+# NotedELN - an Electronic Lab Notebook
 
 ## Introduction
 
-ELN is an Electronic Lab Notebook for scientists of all stripes. ELN
-is great for:
+NotedELN is an Electronic Lab Notebook for scientists of all stripes. 
+NotedELN is great for:
 
  *  Taking notes during experiments since it automatically saves your
     input every 10 seconds so that your notes will never be lost;
@@ -18,12 +18,12 @@ is great for:
  *  Recording your thought processes, since it will never get in the
     way of your typing with arbitrary constraints on input formatting.
 
-ELN is quite mature and used daily in our lab. ELN has never caused
-anyone to lose any data or notes. To the contrary, since most people
-type faster than they can write by hand, ELN has helped people take
-more detailed notes than they would otherwise have.
+NotedELN is quite mature and used daily in our lab. NotedELN has never 
+caused anyone to lose any data or notes. To the contrary, since most 
+people type faster than they can write by hand, ELN has helped people 
+take more detailed notes than they would otherwise have.
 
-ELN is free and open source and is available for Windows, Mac, and
+NotedELN is free and open source and is available for Windows, Mac, and
 Linux. Please visit its [web page](http://www.danielwagenaar.net/eln)
 for download details.
 
@@ -41,25 +41,27 @@ On most Linux distributions, compilation from source should be
 straightforward:
 
 * Make sure you have the required dependencies. Most importantly, you
-  should have the complete Qt development system installed, version
-  5.6.1 or above. Packages vary widely across distributions.
+  should have the complete Qt 5 development system installed, version
+  5.6.1 or above. Exact package names vary across distributions.
 
   On Ubuntu, you would do:
 
         sudo apt install git qtmultimedia5-dev \
-             libqt5webkit5-dev libqt5svg5-dev asciidoc
+             libqt5webkit5-dev libqt5svg5-dev \
+			 latexmk texlive-latex-base
 
   On OpenSUSE, you would do:
 
         sudo zypper install --no-recommends git libqt5-qtbase-common-devel \
              libqt5-qtmultimedia-devel libQt5WebKitWidgets-devel \
              libqt5-qtsvg-devel libqt5-qttools-devel \
-             libQt5PrintSupport-devel asciidoc
+             libQt5PrintSupport-devel \
+			 latexmk texlive-latex
 
   (I would be happy to include your instructions for other
   distributions. Please [drop me a line](mailto:daw@caltech.edu).)
 
-* Clone the ELN code from github:
+* Clone the NotedELN code from github:
 
         git clone https://github.com/wagenadl/eln.git
 
@@ -69,64 +71,90 @@ straightforward:
 
 * Compile the code:
 
-        make
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
 
 * Test the result:
 
-        ./build/eln
+        ./notedeln
 
-* Once you are happy, install ELN to a system location:
+* Once you are happy, install NotedELN to a system location:
 
-        sudo make install
+        sudo cmake --install .
 
   (This installs the binaries in `/usr/local/bin` and some extra files in
-  `/usr/local/share`. If you prefer other locations, please edit lines 10
-  and 11 of the Makefile.)
+  `/usr/local/share`. If you prefer other locations, use the --prefix
+  option to cmake.)
+  
+* If you are on Debian or a derived system, you can also create a ".deb"
+  by typing
+  
+        cpack
+		
+  The resulting "notedeln-xxx.deb" can be installed with "dpkg -i" in the
+  usual manner.
 
 Please let me know if you have trouble. I will gladly try to help.
 
 ## Installation from source on Mac OS X
+
+(This section needs verification of CMake instructions.)
 
 Building from source on Mac is only slightly more involved.
 
 * You need to get the Qt development system and Apple's XCode
   development tools.
 
-* After that, the same `git clone` / `cd eln` / `make` steps
-  should compile the code:
+* After that, the same steps should compile the code:
 
         git clone https://github.com/wagenadl/eln.git
         cd eln
-        make
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
 
-* You can then simply run ELN from within the build tree, or—more
+* You can then simply run NotedELN from within the build tree, or—more
   conveniently—build a package:
 
-        make macdmg
+        cpack
 
   That should generate a file called "eln.dmg" that you can install
   in the usual way.
 
 ## Installation from source on Windows
 
-In my experience, this tends to be somewhat tricky.
+In my experience, this tends to be a bit more tricky.
 
-* You need to get the Qt development system.
+* You need to get Visual Studio (Community Edition works great) and the Qt development system,
+  version 5.12 or later. (NotedELN has not yet been tested with Qt 6.)
 
-* If you want to build an installation package, you will need [Inno
-  Setup](http://www.jrsoftware.org/isinfo.php).
+* If you want to build an installation package, you will need 
+  [NSIS](https://nsis.sourceforge.io/Download).
 
-* Use the Qt Creator to build and compile "eln" and "webgrab" in "Release" mode.
+* Open a "git bash" terminal in some appropriate location, then type:
 
-* Test the resulting executable.
+        git clone https://github.com/wagenadl/eln.git
+		
+  to download the repository.
+  
+* Continue typing in the terminal to build the package:
 
-* To properly install:
+        cd eln
+        mkdir build
+        cd build
+        CMAKE_PREFIX_PATH=/c/Qt/5.15.2/msvc2019_64/lib/cmake/Qt5 cmake ..
+        cmake --build . --config Release
+		
+  You will have to change the path to Qt if you have a different version.
 
-  * Open a bash shell (from git or cygwin) in the ELN root directory and type
+* You can now run the eln binary in-place, but you probably want to create an installation 
+  package, so keep typing in the terminal:
 
-            ./tools/windeploy.pl
+        cpack
 
-      If you get errors, you will need to edit that script to correct paths to Qt
-      and other essential components.
-
-  * Open `eln-x86.iss` in Inno Setup; compile and run.
+* This results in a file called NotedELN-x.y.z-win64.exe in the "build" folder.
+  Double click it to install.
+	

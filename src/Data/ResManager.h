@@ -1,17 +1,17 @@
-// Data/ResManager.H - This file is part of eln
+// Data/ResManager.H - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // ResManager.H
@@ -35,6 +35,7 @@ public:
   Resource *byURL(QUrl) const; // 0 if not found
   void setRoot(QString);
   Resource *importImage(QImage img, QUrl source=QUrl());
+  Resource *importVideo(QImage img, QUrl source=QUrl());
   Resource *getArchiveAndPreview(QUrl source, QString altRes=""); // does not wait for completion
   void dropResource(Resource *);
   void perhapsDropResource(QString);

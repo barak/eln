@@ -1,17 +1,17 @@
-// App/Toolbars.cpp - This file is part of eln
+// App/Toolbars.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Toolbars.C
@@ -26,53 +26,36 @@
 
 #include <QDebug>
 
-#define CORRESPONDING 1
-
 Toolbars::Toolbars(Mode *mode, QGraphicsItem *parent): QGraphicsObject(parent) {
   m = Mode::Browse;
   modes = new Modebar(mode, this);
-
   mcolors = new ColorBar(mode, false, this);
-#if CORRESPONDING
-  connect(mode, SIGNAL(markSizeChanged(double)),
-	  mcolors, SLOT(setMarkSize(double)));
-  connect(mode, SIGNAL(shapeChanged(GfxMarkData::Shape)),
-	  mcolors, SLOT(setShape(GfxMarkData::Shape)));
-  connect(mode, SIGNAL(colorChanged(QColor)),
-	  mcolors, SLOT(setColor(QColor)));
-#endif
-
   lcolors = new ColorBar(mode, true, this);
-#if CORRESPONDING
-  connect(mode, SIGNAL(lineWidthChanged(double)),
-	  lcolors, SLOT(setLineWidth(double)));
-  connect(mode, SIGNAL(colorChanged(QColor)),
-	  lcolors, SLOT(setColor(QColor)));
-#endif
-  
   shapes = new MarkShapeBar(mode, this);
-#if CORRESPONDING
-  connect(mode, SIGNAL(colorChanged(QColor)),
-	  shapes, SLOT(setColor(QColor)));
-  connect(mode, SIGNAL(markSizeChanged(double)),
-	  shapes, SLOT(setMarkSize(double)));
-#endif
-
   sizes = new MarkSizeBar(mode, this);
-#if CORRESPONDING
-  connect(mode, SIGNAL(colorChanged(QColor)),
-	  sizes, SLOT(setColor(QColor)));
-  connect(mode, SIGNAL(shapeChanged(GfxMarkData::Shape)),
-	  sizes, SLOT(setShape(GfxMarkData::Shape)));
-#endif
-  
   widths = new LineWidthBar(mode, this);
-#if CORRESPONDING
-  connect(mode, SIGNAL(colorChanged(QColor)),
-	  widths, SLOT(setColor(QColor)));
-#endif
-
   nav = new Navbar(this);
+
+  connect(mode, &Mode::markSizeChanged,
+          [this](double ms) {
+            mcolors->setMarkSize(ms);
+            shapes->setMarkSize(ms);
+          });
+
+  connect(mode, &Mode::shapeChanged,
+          [this](GfxMarkData::Shape shp) {
+            mcolors->setShape(shp);
+            sizes->setShape(shp);
+          });
+
+  connect(mode, &Mode::colorChanged,
+          [this](QColor c) {
+            lcolors->setColor(c);
+            mcolors->setColor(c);
+            shapes->setColor(c);
+            sizes->setColor(c);
+            widths->setColor(c);
+          });  
 
   ro = mode->isReadOnly();
   if (ro) {

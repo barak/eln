@@ -1,17 +1,17 @@
-// App/UserInfo.cpp - This file is part of eln
+// App/UserInfo.cpp - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // UserInfo.cpp
@@ -50,10 +50,11 @@ namespace UserInfo {
 //#include <Lmcons.h>
 #define SECURITY_WIN32
 #include <security.h>
+#include <secext.h>
 
 namespace UserInfo {
   QString fullName() {
-    TCHAR username[1024];
+    WCHAR username[1024];
     DWORD username_len = 1023;
     if (GetUserNameExW(NameDisplay, username, &username_len))
       return QString::fromWCharArray(username);

@@ -1,17 +1,17 @@
-// App/Mode.H - This file is part of eln
+// App/Mode.H - This file is part of NotedELN
 
-/* eln is free software: you can redistribute it and/or modify
+/* NotedELN is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   eln is distributed in the hope that it will be useful,
+   NotedELN is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with eln.  If not, see <http://www.gnu.org/licenses/>.
+   along with NotedELN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Mode.H
@@ -57,10 +57,13 @@ public:
   double markSize() const;
   TypeM typeMode() const;
   DrawM drawMode() const;
-  bool isReadOnly() const { return ro; }
+  bool isReadOnly() const { return ro; } // whole notebook
+  bool isWritable() const; // this entry
+  bool isInLateNote() const { return inlatenote; }
 public:
   static Mode *ensure(Mode *);
 public slots:
+  void setWritable(bool);
   void setMode(Mode::M);
   void setLineWidth(double);
   void setColor(QColor);
@@ -68,6 +71,8 @@ public slots:
   void setMarkSize(double);
   void setTypeMode(TypeM);
   void setDrawMode(DrawM);
+  void enterLateNote();
+  void leaveLateNote();
 signals:
   void modeChanged(Mode::M);
   void lineWidthChanged(double);
@@ -78,6 +83,8 @@ signals:
   void drawModeChanged(DrawM);
 private:
   bool ro;
+  bool writable;
+  bool inlatenote;
   M m;
   TypeM typem;
   DrawM drawm;
