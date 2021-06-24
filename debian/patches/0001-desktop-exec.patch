@@ -1,0 +1,21 @@
+From: "Barak A. Pearlmutter" <barak+git@pearlmutter.net>
+Date: Thu, 24 Jun 2021 22:47:37 +0100
+Subject: desktop exec
+
+---
+ src/notedeln.desktop | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/notedeln.desktop b/src/notedeln.desktop
+index e27bf63..fc0c9ff 100755
+--- a/src/notedeln.desktop
++++ b/src/notedeln.desktop
+@@ -1,7 +1,7 @@
+ [Desktop Entry]
+ Name=NotedELN
+ GenericName=Electronic Lab Notebook
+-Exec=noted %f
++Exec=notedeln %f
+ Terminal=false
+ Type=Application
+ Categories=Office

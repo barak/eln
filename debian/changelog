@@ -4,8 +4,16 @@ eln (1.2.20.3-2) unstable; urgency=medium
     - quilt patches upstreamed
     - install scalable icon
     - use bitmap icons derived from scalable icon
+    - switch from qmake to cmake, simplify debian/rules
+  * Merge -doc package into main package
+  * Symbolic links from new upstream name notedeln to eln
+    in /usr/share/doc/
+    in /usr/bin/
+    in /usr/share/man/man1/
+  * Provide new upstream name
+  * Patch upstream desktop file: incorrect executable
 
- -- Barak A. Pearlmutter <bap@debian.org>  Sat, 01 May 2021 21:36:12 +0100
+ -- Barak A. Pearlmutter <bap@debian.org>  Thu, 24 Jun 2021 22:53:58 +0100
 
 eln (1.2.20.3-1) unstable; urgency=medium
 
