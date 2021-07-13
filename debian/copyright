@@ -1,5 +1,5 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ELN (Electronic Lab Notebook)
+Upstream-Name: NotedELN (Electronic Lab Notebook)
 Upstream-Contact: Daniel Wagenaar <daw@caltech.edu>
 Source: https://github.com/wagenadl/eln
 

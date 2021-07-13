@@ -7,12 +7,3 @@ export QT_SELECT=5
 
 %:
 	dh $@ --buildsystem=cmake
-
-execute_after_dh_auto_install:
-	mkdir -p debian/eln/usr/share/doc/eln
-	mv debian/eln/usr/share/doc/notedeln/* debian/eln/usr/share/doc/eln/
-	rmdir debian/eln/usr/share/doc/notedeln
-	ln -s eln debian/eln/usr/share/doc/notedeln
-	mv debian/eln/usr/bin/notedeln debian/eln/usr/bin/eln
-	ln -s eln debian/eln/usr/bin/notedeln
-	ln -s notedeln.1.gz debian/eln/usr/share/man/man1/eln.1.gz

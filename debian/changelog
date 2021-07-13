@@ -5,15 +5,13 @@ eln (1.4.0-1) unstable; urgency=medium
     - install scalable icon
     - use bitmap icons derived from scalable icon
     - switch from qmake to cmake, simplify debian/rules
+    - now with 📺🎥! add build dependency on qtmultimedia5-dev
+  * Follow upstream rename to more unique name NotedELN
   * Merge -doc package into main package
-  * Symbolic links from new upstream name notedeln (NotedELN) to eln
-    in /usr/share/doc/
-    in /usr/bin/
-    in /usr/share/man/man1/
-  * Provide new upstream name
   * Patch upstream desktop file: incorrect executable
+  * Recommend git, which the notebook can use
 
- -- Barak A. Pearlmutter <bap@debian.org>  Tue, 13 Jul 2021 19:13:47 +0100
+ -- Barak A. Pearlmutter <bap@debian.org>  Tue, 13 Jul 2021 21:28:53 +0100
 
 eln (1.2.20.3-1) unstable; urgency=medium
 
