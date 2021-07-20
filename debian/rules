@@ -7,3 +7,6 @@ export QT_SELECT=5
 
 %:
 	dh $@ --buildsystem=cmake
+
+execute_before_dh_auto_build:
+	@echo "blhc: ignore-line-regexp: .*/CMakeCXXCompilerABI.cpp.*"
