@@ -18,7 +18,7 @@ Build-Depends: debhelper-compat (= 13),
 		texlive-latex-extra (>= 2017),
 		texlive-latex-recommended (>= 2017),
 		biber
-Standards-Version: 4.5.1
+Standards-Version: 4.6.0
 Rules-Requires-Root: no
 Homepage: http://www.danielwagenaar.net/eln
 Vcs-Git: https://salsa.debian.org/science-team/eln.git
