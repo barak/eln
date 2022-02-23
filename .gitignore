@@ -11,6 +11,13 @@ release-*
 *.dmg
 Info.plist
 obj-*
+<<<<<<< HEAD
+*debhelper*
+debian/notedeln
+debian/files
+debian/*.substvars
+debian/eln
+*~
 
 # LaTeX debris and output in doc/
 *.aux

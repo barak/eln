@@ -922,7 +922,7 @@ int TextItem::substituteInternalScripts(int start, int end) {
     QChar c = document()->characterAt(pos);
     if ((c=="^" || c=="_") && pos<end-1) {
       QString s = QString(c) + QString(document()->characterAt(pos+1));
-      if (Accents::contains(s)) {
+      if (Accents::isScript(s)) {
         TextCursor cur(document(), pos+2, pos);
         cur.deleteChar();
         QString sub = Accents::map(s);
@@ -937,9 +937,13 @@ int TextItem::substituteInternalScripts(int start, int end) {
 }      
 
 bool TextItem::keyPressAsDigraph(QKeyEvent *e) {
+  if (cursor.hasSelection())
+    return false;
+  QString charNow = e->text();
+  if (charNow=="")
+    return false;
   QChar charBefore = document()->characterAt(cursor.position()-1);
   QChar charBefore2 = document()->characterAt(cursor.position()-2);
-  QString charNow = e->text();
   QString digraph = QString(charBefore) + charNow;
   QString trigraph = QString(charBefore2) + digraph;
   if (Digraphs::contains(digraph)) {
@@ -1075,7 +1079,7 @@ static bool balancedBrackets(QString s) {
 }
 
 bool TextItem::unscriptStyles() {
-  // drop old super/subscript 
+  // drop old super/subscript
   cursor.clearSelection();
   
   MarkupData *oldscript = data()->markupAt(cursor.position(),
@@ -1095,12 +1099,30 @@ bool TextItem::unscriptStyles() {
   cursor.movePosition(TextCursor::Right);
   return true;
 }
-  
 
-bool TextItem::tryScriptStyles(bool onlyIfBalanced) {
+bool TextItem::tryAngleBrackets() {
+  cursor.clearSelection();
+  if (document()->characterAt(cursor.position()-1) != '>')
+    return false;
+  TextCursor m = cursor.findBackward("<");
+  if (!m.hasSelection())
+    return false;
+  m.clearSelection();
+  for (int k=m.position(); k<cursor.position(); k++)
+    if (document()->characterAt(k).isSpace())
+      return false;
+  m.deleteChar();
+  m.insertText("⟨");
+  cursor.deletePreviousChar();
+  cursor.insertText("⟩");
+  return true;
+}
+
+bool TextItem::tryScriptStyles(bool onlyifbalanced) {
   /* Returns true if we decide to make a superscript or subscript, that is,
      if there is a preceding "^" or "_".
    */
+  tryAngleBrackets();
   cursor.clearSelection();
   
   if (data()->markupAt(cursor.position(),
@@ -1111,21 +1133,26 @@ bool TextItem::tryScriptStyles(bool onlyIfBalanced) {
 
   bool endswithbrace = document()->characterAt(cursor.position()-1) == '}';
   QString re = "(\\^|_)";
-  if (endswithbrace)
+  if (endswithbrace || onlyifbalanced)
     re += "\\{";
       
   TextCursor m = cursor.findBackward(QRegExp(re));
-  if (!m.hasSelection())
-    return false; // no "^" or "_"
+  if (!m.hasSelection()) {
+    if (endswithbrace)
+      return false;
+    re = "(\\^|_)";
+    m = cursor.findBackward(QRegExp(re));
+    if (!m.hasSelection())
+      return false; // no "^" or "_"
+  }
   if (m.selectionEnd() == cursor.position())
     return false; // empty target
 
   QString mrk = m.selectedText();
 
-  if (onlyIfBalanced) {
+  if (onlyifbalanced) {
     TextCursor scr(document(), m.selectionStart() + 1);
     scr.setPosition(cursor.position(), TextCursor::KeepAnchor);
-    qDebug() << "onlyifbalanced" << scr.selectedText();
     if (!balancedBrackets(scr.selectedText()))
       return false;
   }
@@ -1241,8 +1268,20 @@ void TextItem::toggleSimpleStyle(MarkupData::Style type,
   
   MarkupData *oldmd = data()->markupAt(start, type);
   
-  if (oldmd && oldmd->start()==start && oldmd->end()==end) {
-    deleteMarkup(oldmd);
+  if (oldmd) {
+    // touch or overlap
+    int ostart = oldmd->start();
+    int oend = oldmd->end();
+    if (oend>=end) {
+      // whole section was marked up, we'll drop it
+      deleteMarkup(oldmd);
+      if (ostart<start)
+        addMarkup(type, ostart, start);
+      if (oend>end)
+        addMarkup(type, end, oend);
+    } else {
+      addMarkup(type, start, end);
+    }
   } else if (start<end) {
     addMarkup(type, start, end);
   }
