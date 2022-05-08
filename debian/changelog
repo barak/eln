@@ -1,11 +1,11 @@
-eln (1.4.4-1) UNRELEASED; urgency=medium
+eln (1.4.6-1) unstable; urgency=medium
 
-  * Track upstream changes
+  * New upstream release
     - debian desktop file patch has been upstreamed
   * Add magic line to build to work around blhc false positive
   * Bump policy version
 
- -- Barak A. Pearlmutter <bap@debian.org>  Fri, 06 May 2022 20:46:33 +0100
+ -- Barak A. Pearlmutter <bap@debian.org>  Sun, 08 May 2022 22:44:19 +0100
 
 eln (1.4.0-1) unstable; urgency=medium
 
