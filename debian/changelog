@@ -1,5 +1,6 @@
-eln (1.4.6-2) UNRELEASED; urgency=medium
+eln (1.5.0-1) unstable; urgency=medium
 
+  [ Debian Janitor ]
   * Remove constraints unnecessary since buster:
     + Build-Depends: Drop versioned constraint on asciidoc, docbook-xml,
       docbook-xsl, libqt5svg5-dev, libqt5webkit5-dev, qtbase5-dev,
@@ -7,7 +8,12 @@ eln (1.4.6-2) UNRELEASED; urgency=medium
       texlive-latex-base, texlive-latex-extra, texlive-latex-recommended and
       xsltproc.
 
- -- Debian Janitor <janitor@jelmer.uk>  Mon, 09 May 2022 05:14:35 -0000
+  [ Barak A. Pearlmutter ]
+  * New upstream release
+  * Swizzle from qt5 to qt6
+  * Bump policy version
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Fri, 24 Mar 2023 10:06:27 +0000
 
 eln (1.4.6-1) unstable; urgency=medium
 

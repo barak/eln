@@ -3,10 +3,14 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-export QT_SELECT=5
+export QT_SELECT=6
 
 %:
 	dh $@ --buildsystem=cmake
 
 execute_before_dh_auto_build:
 	@echo "blhc: ignore-line-regexp: .*/CMakeCXXCompilerABI.cpp.*"
+
+execute_after_dh_auto_install:
+	@echo "Remove extra license file; contents are in debian/copyright"
+	-rm --verbose debian/notedeln/usr/share/doc/notedeln/ubuntu-font-licence-1.0.txt
