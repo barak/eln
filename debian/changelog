@@ -1,4 +1,4 @@
-eln (1.5.0-2) UNRELEASED; urgency=medium
+eln (1.5.0-2) unstable; urgency=medium
 
   * Use secure URI in Homepage field.
   * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
