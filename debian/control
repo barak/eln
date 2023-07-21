@@ -25,7 +25,7 @@ Vcs-Git: https://salsa.debian.org/science-team/eln.git
 Vcs-Browser: https://salsa.debian.org/science-team/eln
 
 Package: notedeln
-Architecture: any
+Architecture: amd64 arm64 armhf i386
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: git
 Description: Electronic Lab Notebook called NotedELN

@@ -1,3 +1,11 @@
+eln (1.5.0-3) unstable; urgency=medium
+
+  * Restrict architecture to those for which qt6-webengine-dev is
+    available (closes: #1040857). See also bug 1038125. This should be
+    relaxed as qt6-webengine-dev is ported.
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Fri, 21 Jul 2023 19:42:38 +0200
+
 eln (1.5.0-2) unstable; urgency=medium
 
   * Use secure URI in Homepage field.
