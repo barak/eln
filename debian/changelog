@@ -1,9 +1,8 @@
 eln (1.5.2-1) unstable; urgency=medium
 
   * New upstream release
-  * Build scripts now make Qt6 Multimedia stuff optional, so build on all
-    archs but use ugly foo-dev|dpkg hack to allow building even if the
-    desired Qt library is not available.
+  * Build scripts now make Qt6 Multimedia stuff optional. But, let's just
+    require it anyway and let the porters worry about it.
 
  -- Barak A. Pearlmutter <bap@debian.org>  Tue, 08 Aug 2023 14:38:10 +0100
 
