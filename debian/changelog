@@ -1,8 +1,10 @@
-eln (1.5.2-2) unstable; urgency=medium
+eln (1.5.4-1) unstable; urgency=medium
 
   * Make dependencies on optional stuff optional with foo|dpkg trick.
+  * New upstream release
+  * Bump policy version
 
- -- Barak A. Pearlmutter <bap@debian.org>  Tue, 05 Dec 2023 16:36:24 +0000
+ -- Barak A. Pearlmutter <bap@debian.org>  Sat, 27 Apr 2024 10:51:06 +0100
 
 eln (1.5.2-1) unstable; urgency=medium
 

@@ -20,7 +20,7 @@ Build-Depends: debhelper-compat (= 13),
 		qml6-module-qtquick3d-spatialaudio,
 		sphinx,
 		asciidoc,
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 Rules-Requires-Root: no
 Homepage: https://www.danielwagenaar.net/eln
 Vcs-Git: https://salsa.debian.org/science-team/eln.git
