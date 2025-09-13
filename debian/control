@@ -1,7 +1,7 @@
 Source: eln
 Section: editors
 Priority: optional
-Maintainer: Debian Science Team <debian-science-maintainers@alioth-lists.debian.net>
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Daniel Wagenaar <daw@caltech.edu>,
 	   Barak A. Pearlmutter <bap@debian.org>
 Build-Depends: debhelper-compat (= 13),
