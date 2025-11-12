@@ -596,9 +596,6 @@ bool TextItem::keyPressWithControl(QKeyEvent *e) {
   if (keyPressAsSimpleStyle(e->key(), textCursor()))
     return true;
 
-  if (mode()->typeMode()==Mode::Math)
-    tryTeXCode(true);
-  
   switch (e->key()) {
   case Qt::Key_V:
     if (!cursor.hasSelection())
@@ -810,12 +807,56 @@ bool TextItem::keyPressAsInsertion(QKeyEvent *e) {
       return false; 
 
   if (!cursor.hasSelection()) {
-    cursor.insertText(now);
+    if (QString(")}]”’»").contains(now))
+      magicInsertClose(now);
+    else if (QString("({[“‘«").contains(now))
+      magicInsertOpen(now);
+    else
+      cursor.insertText(now);
     if (now=="}" && mode()->typeMode()==Mode::Math) 
       tryScriptStyles(true);
     ensureCursorVisible();
   }
   return true;
+}
+
+void TextItem::magicInsertOpen(QString txt) {
+  int prepos = cursor.position();
+  cursor.insertText(txt);
+  int postpos = cursor.position();
+  for (MarkupData *m: data()->markups()) {
+    if (m->start() == postpos
+        && (m->style()==MarkupData::Superscript
+            || m->style()==MarkupData::Subscript)) {
+      m->setStart(prepos);
+    }
+  }
+}
+
+void TextItem::magicInsertClose(QString txt) {
+  int prepos = cursor.position();
+  cursor.insertText(txt);
+  QString open = "({[“‘«";
+  QString close = ")}]”’»";
+  int idx = close.indexOf(txt);
+  if (idx<0)
+    return;
+  QChar opener = open[idx];
+  int postpos = cursor.position();
+  for (MarkupData *m: data()->markups()) {
+    if (m->end() == prepos) {
+      int count = 0;
+      for (int p = m->start(); p<prepos; p++) {
+        QChar c = document()->characterAt(p);
+        if (c==opener)
+          count++;
+        else if (c==txt)
+          count--;
+      }
+      if (count>0)
+        m->setEnd(postpos);
+    }
+  }
 }
 
 void TextItem::ensureCursorVisible() {
@@ -1010,8 +1051,17 @@ void TextItem::inputMethodEvent(QInputMethodEvent *e) {
     Item::inputMethodEvent(e);
   }
 }
-  
+
+void TextItem::keyReleaseEvent(QKeyEvent *e) {
+  if (mode()->mode()!=Mode::Type)
+    return;
+  if (e->key() == Qt::Key_Control && controltap)
+    if (mode()->typeMode()==Mode::Math)
+      tryTeXCode(true);
+}
+
 void TextItem::keyPressEvent(QKeyEvent *e) {
+  controltap = e->key() == Qt::Key_Control;
   if (clips() && !clip_.contains(posToPoint(cursor.position()))) {
     qDebug() << "keypress out of rect"<< posToPoint(cursor.position()) << clip_;
     clearFocus();
@@ -1150,7 +1200,7 @@ bool TextItem::tryScriptStyles(bool onlyifbalanced) {
     return false;
 
   bool endswithbrace = document()->characterAt(cursor.position()-1) == '}';
-  int k = cursor.startOfScript(endswithbrace || onlyifbalanced);
+  int k = cursor.startOfScript(endswithbrace);
   if (k<0) {
     if (endswithbrace)
       return false;
@@ -1168,11 +1218,13 @@ bool TextItem::tryScriptStyles(bool onlyifbalanced) {
       return false;
   }
 
-  if (endswithbrace) {
+  if (endswithbrace) 
     cursor.deletePreviousChar();
-    cursor.correctPosition(substituteInternalScripts(k, cursor.position()));
+  if (endswithbrace || onlyifbalanced)
+    cursor.correctPosition(substituteInternalScripts(k+1, cursor.position()));
+  if (endswithbrace)
     cursor.correctPosition(-TextCursor(document(), k).deleteChar()); // remove opening brace
-  }
+  
   cursor.correctPosition(-TextCursor(document(), k).deleteChar()); // remove opening _ or ^
 
   addMarkup(mrk==QChar('^')

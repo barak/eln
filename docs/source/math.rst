@@ -33,7 +33,7 @@ that can be obtained by typing a backslash followed by their name:
    :width: 700px
    :align: center
 
-To get on of the symbols on the left, type a backslash followed by the
+To get one of the symbols on the left, type a backslash followed by the
 character sequence to its right, then keep typing. (The accents
 (**j**) differ from the other codes, in that the accent is placed over
 the preceding character rather than as a separate entity.)
@@ -47,7 +47,7 @@ Accented letters
 As an alternative to standard unicode input methods for entering
 accented letters, NotedELN supports creating a select group of
 accented letters by typing a backslash followed by a symbol and a
-letter, as in “Se\\˜nor” for “Señor” or “gar\\,con” for
+letter, as in “Se\\˜norita” for “Señorita” or “gar\\,con” for
 “garçon”. Here is the full list:
 
 .. image:: accents.svg
@@ -65,9 +65,10 @@ When typing mathematical equations, having to frequently type the
 backslash for special characters and [Ctrl][/] for italics can get
 tiresome. To avoid this annoyance, press [Ctrl][‘] (that’s the key to
 the left of the [1] on many qwerty keyboards) to enter (and exit)
-“math” mode, which turns the |type| icon into |type-math|. (Math mode
+“math” mode, which turns the |type| icon into |type-math|. 
+Math mode
 can also be entered by double-clicking the |type| icon or pressing
-[Shift][F2].)
+[Shift][F2].
 
 
 .. |type| image:: type.png
@@ -79,15 +80,17 @@ can also be entered by double-clicking the |type| icon or pressing
               :height: 3ex
               :class: no-scaled-link
 
-In math mode, special characters can be entered simply by typing their
-name and single-character words are typeset in italics [#f2]_. To
-typeset a single-letter variable name in bold, bold italic, or roman,
-type its letter multiple times. Also in math mode, simple subscripts
-and superscripts can be typeset by just typing underscore or hat
-followed by the text of the sub- or superscript. A space, or
-punctuation followed by a space, ends the subscript or superscript. As
-a result, an equation like |eqn1| can be typeset simply by typing
-“int_1^inf 1/x^2 dx = 1” [#f3]_.
+In math mode, single-character words are typeset in italics [#f2]_ and
+special characters can be entered simply by typing their name. (The
+single-character substitutions and those marked with * still require a
+backslash, to avoid collisions with English words.) To typeset a
+single-letter variable name in bold, bold italic, or roman, type its
+letter multiple times. Also in math mode, simple subscripts and
+superscripts can be typeset by just typing underscore or hat followed
+by the text of the sub- or superscript. A space, or punctuation
+followed by a space, ends the subscript or superscript. As a result,
+an equation like |eqn1| can be typeset simply by typing “int_1^inf
+1/x^2 dx = 1” [#f3]_.
 
 .. |eqn1| image:: eqn2.png
                   :height: 2.7ex
@@ -96,8 +99,8 @@ a result, an equation like |eqn1| can be typeset simply by typing
 Even double superscripts and subscripts are possible, to the degree
 that the second level is supported by unicode [#f4]_. For instance,
 |eqn2| can be typeset simply by typing
-“e^{-\\12 (x_1^2 + x_2^2)}”. (Note how the curly braces temporarily
-“protect” the inner expression.)
+“e^{-\\12(x_1^2 + x_2^2)}”. (Note how the curly braces temporarily
+“protect” the inner expression. In this case, you could have actually achieved the same without the braces, as the parentheses also protect their contents.)
 
 .. |eqn2| image:: eqn1.png
                   :height: 2.7ex

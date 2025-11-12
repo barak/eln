@@ -86,6 +86,7 @@ public:
   virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
   virtual void inputMethodEvent(QInputMethodEvent *);
   virtual void keyPressEvent(QKeyEvent *);
+  virtual void keyReleaseEvent(QKeyEvent *);
   virtual void focusInEvent(QFocusEvent *);
   virtual void focusOutEvent(QFocusEvent *);
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *);
@@ -110,6 +111,8 @@ protected slots:
   virtual void redate();
 protected:
   void ensureCursorVisible();
+  void magicInsertClose(QString txt);
+  void magicInsertOpen(QString txt);
 protected:
   Qt::CursorShape cursorShape(Qt::KeyboardModifiers) const;
   bool changesCursorShape() const;
@@ -176,6 +179,7 @@ protected:
   QPoint lastClickScreenPos;
   QPointer<BlockItem> pblock;
   QSet<QObject*> in_progress_res;
+  bool controltap;
 };
 
 #endif
