@@ -1,9 +1,9 @@
-# CMakeLists.txt - Part of NotedELN, (C) Daniel Wagenaar 2021
+# CMakeLists.txt -*- Makefile -*-
+# Part of NotedELN, (C) Daniel Wagenaar 2021 
 
-# NEW BUILD INSTRUCTIONS (as of version 1.3.x)
+# NEW BUILD INSTRUCTIONS
 # Type:
-#   cd build
-#   cmake ..
+#   make
 # to build ELN.
 
 
@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.19)
 
 ######################################################################
 # Set the project name and version
-project(NotedELN VERSION 1.5.6 LANGUAGES CXX)
+project(NotedELN VERSION 1.5.8 LANGUAGES CXX)
 
 set(CMAKE_PROJECT_HOMEPAGE_URL "http://danielwagenaar.net/eln")
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1) # for clangd
@@ -58,7 +58,7 @@ if(TARGET Qt6::MultimediaWidgets)
 endif()
 
 if (WIN32)
-	target_link_libraries(notedeln PRIVATE secur32.lib)
+  target_link_libraries(notedeln PRIVATE secur32.lib)
 endif()
 if (APPLE)
   set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "" FORCE)
