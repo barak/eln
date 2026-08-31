@@ -3,7 +3,7 @@ Section: editors
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Daniel Wagenaar <daw@caltech.edu>,
 	   Barak A. Pearlmutter <bap@debian.org>
-Build-Depends: debhelper-compat (= 13),
+Build-Depends: debhelper-compat (= 14),
 		cmake,
 		qt6-base-dev,
 		qt6-tools-dev,
