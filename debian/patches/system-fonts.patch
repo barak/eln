@@ -1,16 +1,22 @@
-Description: Use system fonts instead of bundled ones
- The UbuntuOrigWeight fonts bundled upstream are under the Ubuntu Font
- Licence 1.0, which is not DFSG-free, so src/Gui/fonts is removed from
- the Debian source package. Do not compile those fonts (or the bundled
- Noto Sans Math) into the Qt resources, and do not install the font
- licence. Instead map the "UbuntuOrigWeight" family to the system Ubuntu
- font if present, else to Noto Sans and Noto Sans Math from
- fonts-noto-core.
-Author: Barak A. Pearlmutter <bap@debian.org>
+From: "Barak A. Pearlmutter" <bap@debian.org>
+Date: Sun, 15 Nov 2026 12:01:41 +0000
+Subject: Use system fonts instead of bundled ones
+
 Bug-Debian: https://bugs.debian.org/1151346
-Forwarded: not-needed
-Last-Update: 2026-11-12
+
+The UbuntuOrigWeight fonts bundled upstream are under the Ubuntu Font
+Licence 1.0, which is not DFSG-free, so src/Gui/fonts is removed from
+the Debian source package. Do not compile those fonts (or the bundled
+Noto Sans Math) into the Qt resources, and do not install the font
+licence. Instead map the "UbuntuOrigWeight" family to the system Ubuntu
+font if present, else to Noto Sans and Noto Sans Math from
+fonts-noto-core.
 ---
+ src/Gui/Fonts.cpp                | 20 +++++++++-----------
+ src/Gui/style.qrc                |  5 -----
+ tools/UnixInstall.CMakeLists.txt |  2 --
+ 3 files changed, 9 insertions(+), 18 deletions(-)
+
 diff --git a/src/Gui/Fonts.cpp b/src/Gui/Fonts.cpp
 index dcfaeeb..0f70b70 100644
 --- a/src/Gui/Fonts.cpp
