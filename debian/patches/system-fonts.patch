@@ -1,0 +1,70 @@
+Description: Use system fonts instead of bundled ones
+ The UbuntuOrigWeight fonts bundled upstream are under the Ubuntu Font
+ Licence 1.0, which is not DFSG-free, so src/Gui/fonts is removed from
+ the Debian source package. Do not compile those fonts (or the bundled
+ Noto Sans Math) into the Qt resources, and do not install the font
+ licence. Instead map the "UbuntuOrigWeight" family to the system Ubuntu
+ font if present, else to Noto Sans and Noto Sans Math from
+ fonts-noto-core.
+Author: Barak A. Pearlmutter <bap@debian.org>
+Bug-Debian: https://bugs.debian.org/1151346
+Forwarded: not-needed
+Last-Update: 2026-11-12
+---
+diff --git a/src/Gui/Fonts.cpp b/src/Gui/Fonts.cpp
+index dcfaeeb..0f70b70 100644
+--- a/src/Gui/Fonts.cpp
++++ b/src/Gui/Fonts.cpp
+@@ -23,15 +23,13 @@
+ #include <QFont>
+ 
+ Fonts::Fonts() {
+-  QStringList ff;
+-  ff << ":fonts/UbuntuOrigWeight-BI.ttf";
+-  ff << ":fonts/UbuntuOrigWeight-B.ttf";
+-  ff << ":fonts/UbuntuOrigWeight-RI.ttf";
+-  ff << ":fonts/UbuntuOrigWeight-R.ttf";
+-  ff << ":fonts/NotoSansMath-Regular.ttf";
+-
+-  foreach (QString f, ff)
+-    QFontDatabase::addApplicationFont(f);
+-
+-  QFont::insertSubstitution("UbuntuOrigWeight", "Noto Sans Math");
++  // The fonts bundled upstream are not shipped in Debian. Notebook
++  // styles ask for "Ubuntu", which Style::font() maps to
++  // "UbuntuOrigWeight". Resolve that to the system Ubuntu font if
++  // installed (package fonts-ubuntu), else to Noto Sans, with Noto
++  // Sans Math as fallback for mathematical Greek characters.
++  QFont::insertSubstitutions("UbuntuOrigWeight",
++                             QStringList() << "Ubuntu"
++                             << "Noto Sans"
++                             << "Noto Sans Math");
+ }
+diff --git a/src/Gui/style.qrc b/src/Gui/style.qrc
+index aafbf18..a5c3940 100644
+--- a/src/Gui/style.qrc
++++ b/src/Gui/style.qrc
+@@ -3,10 +3,5 @@
+         <file>style.json</file>
+         <file>front.jpg</file>
+         <file>eln.css</file>
+-        <file>fonts/UbuntuOrigWeight-BI.ttf</file>
+-        <file>fonts/UbuntuOrigWeight-B.ttf</file>
+-        <file>fonts/UbuntuOrigWeight-RI.ttf</file>
+-        <file>fonts/UbuntuOrigWeight-R.ttf</file>
+-        <file>fonts/NotoSansMath-Regular.ttf</file>
+     </qresource>
+ </RCC>
+diff --git a/tools/UnixInstall.CMakeLists.txt b/tools/UnixInstall.CMakeLists.txt
+index 121e141..40230b6 100644
+--- a/tools/UnixInstall.CMakeLists.txt
++++ b/tools/UnixInstall.CMakeLists.txt
+@@ -5,8 +5,6 @@ install(FILES docs/man/notedeln.1 DESTINATION share/man/man1)
+ install(FILES docs/man/webgrab.1 DESTINATION share/man/man1)
+ install(FILES README.md DESTINATION share/doc/notedeln)
+ install(FILES CHANGELOG DESTINATION share/doc/notedeln)
+-install(FILES src/Gui/fonts/ubuntu-font-licence-1.0.txt.gz
+-  DESTINATION share/doc/notedeln)
+ 
+ foreach(RES IN ITEMS 8 16 22 24 32 48 64 128 256 512)
+   install(FILES src/App/eln.iconset/eln_${RES}x${RES}.png

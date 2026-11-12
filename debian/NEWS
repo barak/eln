@@ -1,0 +1,13 @@
+eln (1.5.8+ds-1) unstable; urgency=medium
+
+  The UbuntuOrigWeight fonts that upstream bundles into NotedELN are
+  licensed under the Ubuntu Font Licence, which is not DFSG-free, so
+  they have been removed from the Debian package.
+
+  Notebooks now use the system "Ubuntu" font if it is installed (it is
+  available in the non-free package fonts-ubuntu), and otherwise fall
+  back to Noto Sans. Notebook pages may therefore look slightly
+  different from how they appear with the upstream build, and text may
+  flow differently. Notebook contents are unaffected.
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Thu, 12 Nov 2026 19:33:53 +0000

@@ -1,24 +1,25 @@
 Source: eln
 Section: editors
-Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
-Uploaders: Daniel Wagenaar <daw@caltech.edu>,
-	   Barak A. Pearlmutter <bap@debian.org>
-Build-Depends: debhelper-compat (= 14),
+Maintainer: Debian Science Maintainers <debian-science-maintainers@alioth-lists.debian.net>
+Uploaders:
+ Daniel Wagenaar <daw@caltech.edu>,
+ Barak A. Pearlmutter <bap@debian.org>,
+Build-Depends:	debhelper-compat (= 14),
 		cmake,
-		qt6-base-dev,
-		qt6-tools-dev,
-		qt6-webengine-dev,
-		qt6-multimedia-dev,
-		qt6-svg-dev, qt6-pdf-dev,
-		qt6-declarative-dev,
-		qml6-module-qtdatavisualization,
+		python3-sphinx <!nodoc>,
 		qml6-module-qt-labs-lottieqt,
 		qml6-module-qtcharts,
-		qml6-module-qtwebengine-controlsdelegates,
-		qml6-module-qtwebengine,
+		qml6-module-qtdatavisualization,
 		qml6-module-qtquick3d-spatialaudio,
-		sphinx,
-		asciidoc,
+		qml6-module-qtwebengine,
+		qml6-module-qtwebengine-controlsdelegates,
+		qt6-base-dev,
+		qt6-declarative-dev,
+		qt6-multimedia-dev,
+		qt6-pdf-dev,
+		qt6-svg-dev,
+		qt6-tools-dev,
+		qt6-webengine-dev,
 Standards-Version: 4.7.4
 Homepage: https://www.danielwagenaar.net/eln
 Vcs-Git: https://salsa.debian.org/science-team/eln.git
@@ -26,8 +27,9 @@ Vcs-Browser: https://salsa.debian.org/science-team/eln
 
 Package: notedeln
 Architecture: amd64 arm64 armhf i386
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: fonts-noto-core
 Recommends: git
+Suggests: fonts-ubuntu
 Description: Electronic Lab Notebook called NotedELN
  NotedELN is an electronic lab notebook with an emphasis on solid data
  storage. It is designed for scientists of all stripes, and supports:

@@ -1,3 +1,22 @@
+eln (1.5.8+ds-1) unstable; urgency=medium
+
+  * Repack upstream source to remove the UbuntuOrigWeight fonts, which
+    are under the non-free Ubuntu Font Licence (closes: #1151346).
+  * Also drop the bundled Noto Sans Math. Use system fonts from
+    fonts-noto-core instead (patch system-fonts.patch), and suggest
+    fonts-ubuntu.
+  * Add debian/NEWS describing the font change.
+  * d/watch: repack with +ds suffix, follow upstream rename to notedeln.
+  * d/gbp.conf: keep filtered upstream trees on an upstream branch
+    linked to upstream git tags.
+  * d/copyright: Files-Excluded, drop Ubuntu Font Licence, add debian/*
+    stanza, update years and Source.
+  * d/control: new list address, sort, python3-sphinx <!nodoc> instead of
+    virtual sphinx, drop unused asciidoc, drop dh14-unneeded subst vars.
+  * d/rules: drop obsolete QT_SELECT and licence-removal hack.
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Thu, 12 Nov 2026 19:33:53 +0000
+
 eln (1.5.8-2) unstable; urgency=medium
 
   * bump to debhelper 14

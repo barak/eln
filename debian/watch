@@ -2,4 +2,6 @@ Version: 5
 
 Template: GitHub
 Owner: wagenadl
-Project: @PACKAGE@
+Project: notedeln
+Repacksuffix: +ds
+Dversion-Mangle: auto
