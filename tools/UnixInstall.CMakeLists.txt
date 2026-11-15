@@ -5,8 +5,6 @@ install(FILES docs/man/notedeln.1 DESTINATION share/man/man1)
 install(FILES docs/man/webgrab.1 DESTINATION share/man/man1)
 install(FILES README.md DESTINATION share/doc/notedeln)
 install(FILES CHANGELOG DESTINATION share/doc/notedeln)
-install(FILES src/Gui/fonts/ubuntu-font-licence-1.0.txt.gz
-  DESTINATION share/doc/notedeln)
 
 foreach(RES IN ITEMS 8 16 22 24 32 48 64 128 256 512)
   install(FILES src/App/eln.iconset/eln_${RES}x${RES}.png

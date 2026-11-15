@@ -23,15 +23,13 @@
 #include <QFont>
 
 Fonts::Fonts() {
-  QStringList ff;
-  ff << ":fonts/UbuntuOrigWeight-BI.ttf";
-  ff << ":fonts/UbuntuOrigWeight-B.ttf";
-  ff << ":fonts/UbuntuOrigWeight-RI.ttf";
-  ff << ":fonts/UbuntuOrigWeight-R.ttf";
-  ff << ":fonts/NotoSansMath-Regular.ttf";
-
-  foreach (QString f, ff)
-    QFontDatabase::addApplicationFont(f);
-
-  QFont::insertSubstitution("UbuntuOrigWeight", "Noto Sans Math");
+  // The fonts bundled upstream are not shipped in Debian. Notebook
+  // styles ask for "Ubuntu", which Style::font() maps to
+  // "UbuntuOrigWeight". Resolve that to the system Ubuntu font if
+  // installed (package fonts-ubuntu), else to Noto Sans, with Noto
+  // Sans Math as fallback for mathematical Greek characters.
+  QFont::insertSubstitutions("UbuntuOrigWeight",
+                             QStringList() << "Ubuntu"
+                             << "Noto Sans"
+                             << "Noto Sans Math");
 }

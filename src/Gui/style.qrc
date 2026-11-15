@@ -3,10 +3,5 @@
         <file>style.json</file>
         <file>front.jpg</file>
         <file>eln.css</file>
-        <file>fonts/UbuntuOrigWeight-BI.ttf</file>
-        <file>fonts/UbuntuOrigWeight-B.ttf</file>
-        <file>fonts/UbuntuOrigWeight-RI.ttf</file>
-        <file>fonts/UbuntuOrigWeight-R.ttf</file>
-        <file>fonts/NotoSansMath-Regular.ttf</file>
     </qresource>
 </RCC>
