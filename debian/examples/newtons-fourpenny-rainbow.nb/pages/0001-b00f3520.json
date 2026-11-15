@@ -1,0 +1,95 @@
+{
+ "typ": "page",
+ "cre": "1666-01-20T10:00:00.000",
+ "mod": "1666-01-20T10:00:00.000",
+ "uuid": "b00f3520",
+ "startPage": 1,
+ "unlocked": false,
+ "stampTime": 0,
+ "cui": "",
+ "cc": [
+  {
+   "typ": "title",
+   "cre": "1666-01-20T10:00:00.000",
+   "mod": "1666-01-20T10:00:00.000",
+   "uuid": "8a2ec066",
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-01-20T10:00:00.000",
+     "mod": "1666-01-20T10:00:00.000",
+     "uuid": "072a1373",
+     "text": "A Prisme procur'd at Sturbridge Faire"
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-01-20T10:00:00.000",
+   "mod": "1666-01-20T10:00:00.000",
+   "uuid": "c1df4cef",
+   "y0": 72,
+   "h": 96.664,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-01-20T10:00:00.000",
+     "mod": "1666-01-20T10:00:00.000",
+     "uuid": "dc5fe792",
+     "text": "Item: one triangular glass Prisme, purchas'd this day for the sum of fourpence from a pedlar who swore upon his grandmother's goose that it would “make the very rainbow dance.” I am doubtful, yet hopeful.",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-01-20T10:00:00.000",
+       "mod": "1666-01-20T10:00:00.000",
+       "uuid": "8e02b249",
+       "start": 27,
+       "end": 33,
+       "style": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-01-20T10:00:00.000",
+   "mod": "1666-01-20T10:00:00.000",
+   "uuid": "3a59b87a",
+   "y0": 168.664,
+   "h": 96.664,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-01-20T10:00:00.000",
+     "mod": "1666-01-20T10:00:00.000",
+     "uuid": "8aec0296",
+     "text": "The Plague doth keep the University shut, and so I am return'd to Woolsthorpe with naught to do but think. Mother wisheth me to mind the sheep. The sheep shall mind themselves.",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-01-20T10:00:00.000",
+       "mod": "1666-01-20T10:00:00.000",
+       "uuid": "ad9a1044",
+       "start": 144,
+       "end": 176,
+       "style": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "resources",
+   "cre": "1666-01-20T10:00:00.000",
+   "mod": "1666-01-20T10:00:00.000",
+   "uuid": "5c500df4"
+  }
+ ]
+}

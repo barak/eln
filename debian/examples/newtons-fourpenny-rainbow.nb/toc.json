@@ -1,0 +1,38 @@
+{
+ "typ": "toc",
+ "cre": "1666-01-20T08:00:00.000",
+ "mod": "1666-01-20T08:00:00.000",
+ "uuid": "1ff5dfe8",
+ "cc": [
+  {
+   "typ": "entry",
+   "cre": "1666-01-20T10:00:00.000",
+   "mod": "1666-01-20T10:00:00.000",
+   "seen": "1666-01-20T10:00:00.000",
+   "sheetCount": 1,
+   "startPage": 1,
+   "title": "A Prisme procur'd at Sturbridge Faire",
+   "uuid": "b00f3520"
+  },
+  {
+   "typ": "entry",
+   "cre": "1666-01-27T09:30:00.000",
+   "mod": "1666-01-27T09:30:00.000",
+   "seen": "1666-01-27T09:30:00.000",
+   "sheetCount": 1,
+   "startPage": 2,
+   "title": "Of the Darkening of my Chamber",
+   "uuid": "6337616b"
+  },
+  {
+   "typ": "entry",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "seen": "1666-02-03T11:00:00.000",
+   "sheetCount": 1,
+   "startPage": 3,
+   "title": "Experimentum Crucis",
+   "uuid": "21937771"
+  }
+ ]
+}

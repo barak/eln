@@ -1,0 +1,166 @@
+{
+ "typ": "page",
+ "cre": "1666-02-03T11:00:00.000",
+ "mod": "1666-02-03T11:00:00.000",
+ "uuid": "21937771",
+ "startPage": 3,
+ "unlocked": false,
+ "stampTime": 0,
+ "cui": "",
+ "cc": [
+  {
+   "typ": "title",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "97988521",
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-02-03T11:00:00.000",
+     "mod": "1666-02-03T11:00:00.000",
+     "uuid": "246a6651",
+     "text": "Experimentum Crucis"
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "7b7f35bc",
+   "y0": 72,
+   "h": 119.83,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-02-03T11:00:00.000",
+     "mod": "1666-02-03T11:00:00.000",
+     "uuid": "05e8bf3c",
+     "text": "Methought: perchance the glass itself doth stain the light, as wine staineth a tablecloth. So I set a second Prisme to catch the red alone. Behold — red it remain'd, and red only, howsoever I turn'd the glass. Likewise the blue stay'd obstinately blue.",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-02-03T11:00:00.000",
+       "mod": "1666-02-03T11:00:00.000",
+       "uuid": "6ea6c8bd",
+       "start": 43,
+       "end": 48,
+       "style": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "40de400b",
+   "y0": 191.82999999999998,
+   "h": 50.332,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-02-03T11:00:00.000",
+     "mod": "1666-02-03T11:00:00.000",
+     "uuid": "f16ed3a4",
+     "text": "Then with a lens I gather'd the whole streak together again, and it was white once more!",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-02-03T11:00:00.000",
+       "mod": "1666-02-03T11:00:00.000",
+       "uuid": "74cfe037",
+       "start": 72,
+       "end": 77,
+       "style": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "c45607a6",
+   "y0": 242.16199999999998,
+   "h": 96.664,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-02-03T11:00:00.000",
+     "mod": "1666-02-03T11:00:00.000",
+     "uuid": "6c64dc2d",
+     "text": "Conclusion: White light is no simple thing, but a most curious heap of all the colours, mixt. The glass doth not make colours; it doth but sort them, as a careful shepherd sorteth sheep.",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-02-03T11:00:00.000",
+       "mod": "1666-02-03T11:00:00.000",
+       "uuid": "88337db1",
+       "start": 0,
+       "end": 11,
+       "style": 2
+      },
+      {
+       "typ": "markup",
+       "cre": "1666-02-03T11:00:00.000",
+       "mod": "1666-02-03T11:00:00.000",
+       "uuid": "72bf22ea",
+       "start": 113,
+       "end": 117,
+       "style": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "textblock",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "5ed76dd2",
+   "y0": 338.82599999999996,
+   "h": 50.332,
+   "sheet": 0,
+   "ind": 0,
+   "split": [],
+   "cc": [
+    {
+     "typ": "text",
+     "cre": "1666-02-03T11:00:00.000",
+     "mod": "1666-02-03T11:00:00.000",
+     "uuid": "16f19edf",
+     "text": "To-morrow I shall write to the Royal Society. Mr Hooke shall be delighted vexed. Excellent.",
+     "cc": [
+      {
+       "typ": "markup",
+       "cre": "1666-02-03T11:00:00.000",
+       "mod": "1666-02-03T11:00:00.000",
+       "uuid": "1a9dc595",
+       "start": 64,
+       "end": 73,
+       "style": 8
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "typ": "resources",
+   "cre": "1666-02-03T11:00:00.000",
+   "mod": "1666-02-03T11:00:00.000",
+   "uuid": "e2cb66ee"
+  }
+ ]
+}
